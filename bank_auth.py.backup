@@ -1,0 +1,52 @@
+import secrets
+from itsdangerous import URLSafeTimedSerializer
+import sqlite3
+from datetime import datetime, timedelta
+
+serializer = URLSafeTimedSerializer("your-secret-key-change-this")
+
+def create_magic_link(email: str) -> str:
+    """Generate a magic link token"""
+    token = serializer.dumps(email, salt="magic-link")
+    # Store in database with expiry
+    conn = sqlite3.connect('bank.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS magic_links
+                 (token TEXT PRIMARY KEY, email TEXT, created DATETIME, used BOOLEAN)''')
+    c.execute("INSERT INTO magic_links VALUES (?, ?, ?, ?)",
+              (token, email, datetime.utcnow(), False))
+    conn.commit()
+    conn.close()
+    
+    # Return URL for email
+    return f"https://app.yourdomain.com/auth/verify?token={token}"
+
+def verify_magic_link(token: str, max_age=900):
+    """Verify magic link token (15 minute expiry)"""
+    print(f"VERIFY DEBUG: Checking token {token[:20]}...")
+    
+    try:
+        email = serializer.loads(token, salt="magic-link", max_age=max_age)
+        print(f"VERIFY DEBUG: Token valid for {email}")
+        
+        # Check if token was already used
+        conn = sqlite3.connect('bank.db')
+        c = conn.cursor()
+        c.execute("SELECT used FROM magic_links WHERE token = ?", (token,))
+        result = c.fetchone()
+        
+        if result and result[0]:  # Already used
+            print(f"VERIFY DEBUG: Token already used")
+            return None
+            
+        # Mark as used
+        c.execute("UPDATE magic_links SET used = TRUE WHERE token = ?", (token,))
+        conn.commit()
+        conn.close()
+        
+        print(f"VERIFY DEBUG: Success! Returning {email}")
+        return email
+        
+    except Exception as e:
+        print(f"VERIFY DEBUG: Error: {e}")
+        return None

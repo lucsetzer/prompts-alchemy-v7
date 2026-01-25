@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Token Bank Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+</head>
+<body>
+    <main class="container">
+        <h1>🏦 Token Bank</h1>
+        
+        <form id="balanceForm">
+            <label>Check Token Balance</label>
+            <input type="email" id="email" placeholder="your@email.com" required>
+            <button type="submit">Check Balance</button>
+        </form>
+        
+        <div id="result" style="margin-top: 2rem; padding: 1rem; border-radius: 5px;"></div>
+    </main>
+
+    <script>
+        document.getElementById('balanceForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            // In reality, we'd call your /balance endpoint
+            // For now, simulate:
+            document.getElementById('result').innerHTML = `
+                <article style="background: #e7f5ff">
+                    <h3>${email}</h3>
+                    <p><strong>Token Balance:</strong> (API call needed)</p>
+                    <p><small>Next step: Connect to your bank API</small></p>
+                </article>
+            `;
+        };
+    </script>
+</body>
+</html>
