@@ -1,13 +1,17 @@
 """
 COMBINED APP: Bank API + Dashboard for Render deployment
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 import os
 import sys
+
+# Define dashboard_path before using it
+dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard")
+
 
 # Create main app
 app = FastAPI(
@@ -29,7 +33,7 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory=os.path.join(dashboard_path, "static")), name="static")
 
 # Pass template directory to dashboard app
-dashboard_app.state.template_dir = os.path.join(dashboard_path, "templates")
+#dashboard_app.state.template_dir = os.path.join(dashboard_path, "templates")
 
 
 # ========== MOUNT BANK API ==========
