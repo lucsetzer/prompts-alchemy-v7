@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 import os
 import sys
 
@@ -69,11 +70,23 @@ async def health_check():
         "version": "2.0.0"
     }
 
-@app.get("/")
-async def root_redirect():
-    """Root redirect (will be handled by dashboard mount)"""
-    from fastapi.responses import RedirectResponse
-    return RedirectResponse(url="/dashboard")
+@app.get("/", response_class=HTMLResponse)
+async def frontpage(request: Request):
+    """Serve the frontpage.html template"""
+    import os
+    from fastapi.templating import Jinja2Templates
+    
+    # Path to templates in dashboard folder
+    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+    templates = Jinja2Templates(directory=template_dir)
+    
+    return templates.TemplateResponse("frontpage.html", {
+        "request": request
+        # No variables needed - pricing hardcoded in HTML
+    })
+
+# Mount dashboard at /app (NOT /)
+app.mount("/app", dashboard_app)
 
 # ========== MAIN FOR LOCAL TESTING ==========
 if __name__ == "__main__":
