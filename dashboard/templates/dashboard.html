@@ -364,12 +364,6 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
             document.getElementById('userEmail').textContent = '{{ user_email }}';
         }
         
-        function openApp(appName) {
-            alert(`Launching ${appName} wizard... (Will check tokens via bank API)`);
-            // Will call: POST /spend to bank API
-            // Then redirect to app subdomain
-        }
-        
         function logout() {
             if (confirm('Log out of Prompts Alchemy')) {
                 // Clear session
