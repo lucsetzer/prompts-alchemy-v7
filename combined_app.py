@@ -92,15 +92,13 @@ async def frontpage(request: Request):
     import os
     from fastapi.templating import Jinja2Templates
     
-    # Path to templates in dashboard folder
     template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
     templates = Jinja2Templates(directory=template_dir)
     
     return templates.TemplateResponse("frontpage.html", {
         "request": request
-        # No variables needed - pricing hardcoded in HTML
     })
-
+    
 # Mount dashboard at /app (NOT /)
 app.mount("/app", dashboard_app)
 
