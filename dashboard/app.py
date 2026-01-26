@@ -52,8 +52,8 @@ def get_user_balance(email: str):
     return balance
 
 # Routes
-@app.get("/")
-async def root(request: Request, session: str = Cookie(default=None)):
+@app.get("/app")  # Will be accessible at /app (due to mounting)
+async def dashboard_home(request: Request, session: str = Cookie(default=None)):
     """Main dashboard - requires login"""
     print(f"🎯 ROOT ROUTE: Session cookie present? {'YES' if session else 'NO'}")
     
@@ -86,7 +86,8 @@ async def root(request: Request, session: str = Cookie(default=None)):
             {"name": "A11y Wizard", "cost": 0, "icon": "♿", "status": "ready"},
         ]
     })
-
+    app.mount("/app", dashboard_app)
+    
 @app.get("/login")
 async def login_page(request: Request):
     """Login form"""
