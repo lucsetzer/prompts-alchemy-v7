@@ -55,7 +55,7 @@ except ImportError as e:
 # 3. Define root routes in combined_app.py itself
 @app.get("/")
 async def root():
-    return RedirectResponse("/dashboard/templates/login")
+    return RedirectResponse("/login")
 
 
 # ========== MOUNT BANK API ==========
