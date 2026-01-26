@@ -14,7 +14,7 @@ def send_magic_link_email(email: str, token: str):
     """Send magic link email via Resend.com"""
     
     # Get your Render URL for the magic link
-    public_url = os.getenv("PUBLIC_URL", "http://localhost:8000")
+    public_url = os.getenv("PUBLIC_URL", "http://promptsalchemy.com")
     magic_link = f"{public_url}/auth?token={token}"
     
     # Get Resend API key
