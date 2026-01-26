@@ -2,7 +2,7 @@
 COMBINED APP: Bank API + Dashboard for Render deployment
 """
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -163,6 +163,12 @@ async def frontpage_route(request: Request):
         <p>Looking for: {frontpage_path}</p>
         <p>Template dir: {template_dir}</p>
         """)
+
+
+@app.get("/test-frontpage")
+async def test_frontpage():
+    return PlainTextResponse("TEST WORKS - This route exists")
+
 
 
 # ========== MAIN FOR LOCAL TESTING ==========
