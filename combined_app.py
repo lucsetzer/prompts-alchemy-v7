@@ -124,6 +124,47 @@ async def health_check():
         "version": "2.0.0"
     }
 
+@app.get("/frontpage")
+async def frontpage_route(request: Request):
+    """Explicit frontpage route with debugging"""
+    import os
+    
+    print("=" * 60)
+    print("🚀 FRONTPAGE ROUTE HIT!")
+    
+    # Calculate template path
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    template_dir = os.path.join(current_dir, "dashboard", "templates")
+    
+    print(f"📁 Current directory: {current_dir}")
+    print(f"📁 Template directory: {template_dir}")
+    print(f"📁 Directory exists: {os.path.exists(template_dir)}")
+    
+    if os.path.exists(template_dir):
+        print(f"📁 Files in directory: {os.listdir(template_dir)}")
+    
+    # Check if frontpage.html exists
+    frontpage_path = os.path.join(template_dir, "frontpage.html")
+    print(f"📄 Frontpage.html exists: {os.path.exists(frontpage_path)}")
+    
+    print("=" * 60)
+    
+    templates = Jinja2Templates(directory=template_dir)
+    
+    try:
+        return templates.TemplateResponse("frontpage.html", {"request": request})
+    except Exception as e:
+        print(f"❌ Template error: {e}")
+        # Fallback to simple response
+        from fastapi.responses import HTMLResponse
+        return HTMLResponse(f"""
+        <h1>Template Error</h1>
+        <p>Error: {e}</p>
+        <p>Looking for: {frontpage_path}</p>
+        <p>Template dir: {template_dir}</p>
+        """)
+
+
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
     import uvicorn
