@@ -112,7 +112,7 @@ async def frontpage(request: Request):
         "request": request
     })
 # Mount dashboard at /app (NOT /)
-app.mount("/app", dashboard_a
+app.mount("/app", dashboard_app)
 
 # ========== HEALTH ENDPOINTS ==========
 @app.get("/health")
