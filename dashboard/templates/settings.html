@@ -5,44 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Prompts Alchemy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.dark.min.css">
     <style>
-    :root {
-        --primary: #0cc0df;
-        --dark-bg: #0a0a0f;
-        --card-bg: #151521;
-    }
-    body { 
-        background: var(--dark-bg); 
-        color: #e2e8f0; 
-        margin: 0;
-    }
-    /* Remove Pico.css borders */
-    header, nav, .card, table, tr, td, th {
-        border: none !important;
-        border-bottom: none !important;
-        border-top: none !important;
-    }
-    /* Specific header border - KEEP this one if you want separation */
-    header {
-        border-bottom: 1px solid #2d3748 !important; /* Keep only this border */
-    }
-    /* Card styling */
-    .card { 
-        background: var(--card-bg); 
-        border-radius: 12px; 
-        padding: 2rem; 
-        margin-bottom: 2rem; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-    /* Remove table borders */
-    table {
-        border-collapse: collapse;
-    }
-    th, td {
-        border: none !important;
-        border-bottom: 1px solid #2d3748 !important; /* Keep only row separators */
-    }
+:root {
+    --primary: #0cc0df;
+    --dark-bg: #1a1a2e;  /* Lighter dark */
+    --card-bg: #2d2d44;  /* Lighter cards */
+    --text: #f8f9fa;     /* Brighter text */
+}
+
+body { 
+    background: var(--dark-bg); 
+    color: var(--text);
+    font-size: 16px; /* Normal font size */
+    line-height: 1.5;
+}
+
+/* Reduce Pico.css giant text */
+h1 { font-size: 2rem !important; }
+h2 { font-size: 1.5rem !important; }
+h3 { font-size: 1.25rem !important; }
+p { font-size: 1rem !important; }
+
+.card { 
+    background: var(--card-bg); 
+    border-radius: 12px; 
+    padding: 1.5rem; /* Reduced padding */
+    margin-bottom: 1.5rem;
+}
+
+/* Keep only necessary overrides */
+header, nav {
+    border-bottom: 1px solid #4a5568 !important;
+}
 </style>
 </head>
 <body>
