@@ -36,6 +36,28 @@ app.mount("/static", StaticFiles(directory=os.path.join(dashboard_path, "static"
 #dashboard_app.state.template_dir = os.path.join(dashboard_path, "templates")
 
 
+try:
+    from dashboard.app import app as dashboard_app
+    # Mount the entire dashboard app under /dashboard
+    app.mount("/dashboard", dashboard_app)
+    print("✓ Dashboard mounted at /dashboard")
+except ImportError as e:
+    print(f"⚠ Could not import dashboard: {e}")
+
+# 2. Import and include token/auth routes
+try:
+    from auth_routes import router as auth_router
+    app.include_router(auth_router, prefix="/auth", tags=["authentication"])
+    print("✓ Auth routes included")
+except ImportError as e:
+    print(f"⚠ Could not import auth routes: {e}")
+
+# 3. Define root routes in combined_app.py itself
+@app.get("/")
+async def root():
+    return RedirectResponse("/dashboard/templates/login")
+
+
 # ========== MOUNT BANK API ==========
 print("🔧 Loading Bank API...")
 try:
