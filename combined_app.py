@@ -86,16 +86,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ========== HEALTH ENDPOINTS ==========
-@app.get("/health")
-async def health_check():
-    """Health check for Render/load balancers"""
-    return {
-        "status": "healthy",
-        "service": "prompts-alchemy-combined",
-        "version": "2.0.0"
-    }
-
 @app.get("/", response_class=HTMLResponse)
 async def frontpage(request: Request):
     """Serve the frontpage.html template"""
@@ -114,8 +104,19 @@ async def frontpage(request: Request):
 # Mount dashboard at /app (NOT /)
 app.mount("/app", dashboard_app)
 
+
+# ========== HEALTH ENDPOINTS ==========
+@app.get("/health")
+async def health_check():
+    """Health check for Render/load balancers"""
+    return {
+        "status": "healthy",
+        "service": "prompts-alchemy-combined",
+        "version": "2.0.0"
+    }
+
 # ========== MAIN FOR LOCAL TESTING ==========
-if __name__ == "__main__":
+"""if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", "8000"))
     print(f"🚀 Starting combined app on port {port}")
@@ -124,4 +125,4 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=port,
         reload=True if os.getenv("ENVIRONMENT") == "development" else False
-    )
+    )"""
