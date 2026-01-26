@@ -28,7 +28,6 @@ except ImportError as e:
         return f"http://localhost:8000/auth?token=test_{email}"
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
 
 def get_user_balance(email: str):
     """Get user's token balance from bank database, create if doesn't exist"""
