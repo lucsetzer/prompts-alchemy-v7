@@ -9,6 +9,9 @@ from pathlib import Path
 # Add parent directory to path to import auth modules
 sys.path.append(str(Path(__file__).parent.parent))
 
+template_dir = os.path.join(os.path.dirname(__file__), "templates")
+templates = Jinja2Templates(directory=template_dir)
+
 # Import from root directory
 try:
     from bank_auth import verify_magic_link, create_magic_link
