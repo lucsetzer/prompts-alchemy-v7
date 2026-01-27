@@ -1,6 +1,6 @@
 import os
 import resend
-from bank_auth import create_magic_link
+from bank_auth import create_magic_link, verify_magic_link
 from dotenv import load_dotenv
 
 load_dotenv()
