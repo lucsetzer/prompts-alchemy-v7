@@ -91,14 +91,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-@app.get("/")
-async def public_root(request: Request):
-    """Public landing page - NO AUTH CHECK"""
-    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
-    templates = Jinja2Templates(directory=template_dir)
-    return templates.TemplateResponse("frontpage.html", {"request": request})
-
-
 
 # ========== HEALTH ENDPOINTS ==========
 @app.get("/health")
@@ -115,7 +107,7 @@ async def health_check():
 async def root(request: Request, session: str = Cookie(default=None)):
     """Server decides: frontpage or dashboard"""
     # Check if user has valid session
-    if session and verify_session(session):  # Your session verification
+    if session and verify_magic_link(session, mark_used=False):
         # User is logged in - redirect to dashboard
         return RedirectResponse("/dashboard")
     else:
@@ -124,46 +116,232 @@ async def root(request: Request, session: str = Cookie(default=None)):
         templates = Jinja2Templates(directory=template_dir)
         return templates.TemplateResponse("frontpage.html", {"request": request})
 
+@app.get("/dashboard")  
+async def dashboard_home(request: Request, session: str = Cookie(default=None)):
+    """Main dashboard - requires login"""
+    print(f"🎯 ROOT ROUTE: Session cookie present? {'YES' if session else 'NO'}")
+    
+    if not session:
+        print("🎯 Redirecting to /login (no session)")
+        return RedirectResponse("/login")
+    
+    print(f"🔓 ROOT: Session = {session[:30] if session else 'None'}")
+    email = verify_magic_link(session, mark_used=False)
+    print(f"🔓 ROOT: Verified as {email}")
+    
+    if not email:
+        print("🎯 Redirecting to /login (invalid session)")
+        return RedirectResponse("/login")
+    
+    print(f"🎯 SUCCESS! Showing dashboard for {email}")
+    
+    balance = get_user_balance(email)
+    
+    return templates.TemplateResponse("dashboard.html", {
+        "request": request,
+        "user_email": email,
+        "balance": balance,
+        "apps": [
+            {"name": "Thumbnail Wizard", "cost": 4, "icon": "🖼️", "status": "ready"},
+            {"name": "Document Wizard", "cost": 4, "icon": "📄", "status": "ready"},
+            {"name": "Hook Wizard", "cost": 4, "icon": "🎣", "status": "ready"},
+            {"name": "Prompt Wizard", "cost": 5, "icon": "✨", "status": "ready"},
+            {"name": "Script Wizard", "cost": 3, "icon": "📝", "status": "ready"},
+            {"name": "A11y Wizard", "cost": 0, "icon": "♿", "status": "ready"},
+        ]
+    })
 
-@app.get("/frontpage")
-async def frontpage_route(request: Request):
-    """Explicit frontpage route with debugging"""
-    import os
+@app.get("/auth")
+async def auth_callback(token: str):
+    print(f"🔐 AUTH: Token received {token[:30]}...")
+    email = verify_magic_link(token, mark_used=False)
     
-    print("=" * 60)
-    print("🚀 FRONTPAGE ROUTE HIT!")
+    if not email:
+        print(f"🔓 AUTH: Token = {token[:30]}...")
+        email = verify_magic_link(token, mark_used=False)
+        print(f"🔓 AUTH: Verified as {email}")
+        print(f"🔐 AUTH: Verification SUCCESS for {email}, redirecting to /dashboard")
     
-    # Calculate template path
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    template_dir = os.path.join(current_dir, "dashboard", "templates")
+    response = RedirectResponse("/dashboard")
+    # Update cookie settings here:
+    response.set_cookie(
+        key="session", 
+        value=token,
+        httponly=True,
+        max_age=3600,
+        samesite="lax",
+        secure=False
+    )
+    return response
+
+@app.get("/settings")
+async def settings_page(request: Request, session: str = Cookie(default=None)):
+    if not session:
+        return RedirectResponse("/login")
     
-    print(f"📁 Current directory: {current_dir}")
-    print(f"📁 Template directory: {template_dir}")
-    print(f"📁 Directory exists: {os.path.exists(template_dir)}")
+    email = verify_magic_link(session, mark_used=False)
+    if not email:
+        return RedirectResponse("/login")
     
-    if os.path.exists(template_dir):
-        print(f"📁 Files in directory: {os.listdir(template_dir)}")
+    balance = get_user_balance(email)
     
-    # Check if frontpage.html exists
-    frontpage_path = os.path.join(template_dir, "frontpage.html")
-    print(f"📄 Frontpage.html exists: {os.path.exists(frontpage_path)}")
+    # DEFINE current_plan here (mock for now)
+    current_plan = "Free Tier"  # TODO: Get from database
+    tokens_per_month = 15
+    renewal_date = "2024-02-24"
     
-    print("=" * 60)
+    print(f"🔧 SETTINGS DEBUG: current_plan = {current_plan}")
+    print(f"🔧 SETTINGS DEBUG: user_email = {email}")
     
-    templates = Jinja2Templates(directory=template_dir)
+    return templates.TemplateResponse("settings.html", {
+        "request": request,
+        "user_email": email,
+        "balance": balance,
+        "current_plan": current_plan,
+        "tokens_per_month": tokens_per_month,
+        "renewal_date": renewal_date
+    })
+
+@app.post("/generate-prompt")
+async def generate_prompt(
+    request: Request,
+    goal: str = Form(...),
+    audience: str = Form(...),
+    platform: str = Form(...),
+    style: str = Form(...),
+    tone: str = Form(...),
+    session: str = Cookie(default=None)
+):
+    """Generate a prompt using DeepSeek API with token checking"""
+    
+    # 1. AUTHENTICATION
+    if not session:
+        return RedirectResponse("/login?next=/prompt-wizard")
+    
+    email = verify_magic_link(session, mark_used=False)
+    if not email:
+        return RedirectResponse("/login")
+    
+    # 2. TOKEN CHECK (5 tokens for Prompt Wizard)
+    try:
+        import httpx
+        async with httpx.AsyncClient() as client:
+            # Check balance
+            balance_response = await client.get(
+                f"http://localhost:8001/balance?email={email}",
+                timeout=5.0
+            )
+            
+            if balance_response.status_code == 200:
+                balance = balance_response.json().get("balance", 0)
+                if balance < 5:
+                    return templates.TemplateResponse("insufficient_tokens.html", {
+                        "request": request,
+                        "balance": balance,
+                        "required": 5,
+                        "app_name": "Prompt Wizard"
+                    })
+            else:
+                return layout("Bank Error", 
+                    "<div class='card'><h2>Token system unavailable</h2></div>")
+    except Exception as e:
+        print(f"Token check error: {e}")
+        return layout("System Error", 
+            "<div class='card'><h2>Cannot connect to token system</h2></div>")
+    
+    # 3. DEEPSEEK API CALL
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    if not api_key:
+        return layout("Error", 
+            "<div class='card'><h2>API not configured</h2><p>DeepSeek API key missing.</p></div>")
+    
+    prompt_text = f"""
+    Create a {style} prompt for {audience} to achieve this goal: {goal}.
+    Platform: {platform}
+    Desired tone: {tone}
+    
+    Provide a complete, ready‑to‑use prompt.
+    """
     
     try:
-        return templates.TemplateResponse("frontpage.html", {"request": request})
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "model": "deepseek-chat",
+            "messages": [
+                {"role": "system", "content": "You are a prompt engineering expert."},
+                {"role": "user", "content": prompt_text}
+            ],
+            "max_tokens": 1000
+        }
+        
+        response = requests.post(
+            "https://api.deepseek.com/chat/completions",
+            headers=headers,
+            json=data,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            generated = result["choices"][0]["message"]["content"]
+            
+            # 4. DEDUCT TOKENS AFTER SUCCESS
+            try:
+                async with httpx.AsyncClient() as client:
+                    spend_data = {
+                        "email": email,
+                        "app_id": "prompt_wizard",
+                        "tokens": 5,
+                        "description": f"Prompt: {goal[:50]}..."
+                    }
+                    spend_response = await client.post(
+                        "http://localhost:8001/spend",
+                        json=spend_data,
+                        timeout=5.0
+                    )
+                    if spend_response.status_code != 200:
+                        print(f"Token spend failed but prompt generated: {spend_response.text}")
+            except Exception as e:
+                print(f"Token spend error: {e}")
+            
+            # 5. RETURN RESULT
+            return templates.TemplateResponse("prompt_result.html", {
+                "request": request,
+                "goal": goal,
+                "audience": audience,
+                "platform": platform,
+                "style": style,
+                "tone": tone,
+                "generated_prompt": generated,
+                "tokens_spent": 5
+            })
+            
+        else:
+            return layout("API Error", 
+                f"<div class='card'><h2>API Error {response.status_code}</h2>"
+                f"<p>{response.text}</p></div>")
+                
     except Exception as e:
-        print(f"❌ Template error: {e}")
-        # Fallback to simple response
-        from fastapi.responses import HTMLResponse
-        return HTMLResponse(f"""
-        <h1>Template Error</h1>
-        <p>Error: {e}</p>
-        <p>Looking for: {frontpage_path}</p>
-        <p>Template dir: {template_dir}</p>
-        """)
+        return layout("Error", 
+            f"<div class='card'><h2>Generation failed</h2><p>{str(e)}</p></div>")
+
+@app.get("/prompt-wizard/intro")
+async def prompt_wizard_intro(request: Request, session: str = Cookie(default=None)):
+    """Prompt Wizard introduction page"""
+    if not session:
+        return RedirectResponse("/login?next=/prompt-wizard/intro")
+    
+    email = verify_magic_link(session, mark_used=False)
+    if not email:
+        return RedirectResponse("/login")
+    
+    return templates.TemplateResponse("prompt_wizard_intro.html", {
+        "request": request,
+        "user_email": email
+    })
 
 
 # In combined_app.py - temporary
