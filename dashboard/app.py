@@ -167,13 +167,6 @@ async def auth_callback(token: str):
     )
     return response
 
-@app.get("/logout")
-async def logout():
-    """Logout - clears cookie"""
-    response = RedirectResponse("/login")
-    response.delete_cookie(key="session")
-    return response
-
 @app.get("/dashboard")
 async def dashboard_page(request: Request, session: str = Cookie(default=None)):
     """Explicit dashboard page - same as root"""
