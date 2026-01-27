@@ -151,26 +151,37 @@ async def debug_all():
 @app.get("/auth")
 async def auth_callback(token: str):
     print(f"🔐 AUTH: Token received {token[:30]}...")
+    
+    # Try verification
     email = verify_magic_link(token, mark_used=False)
     
+    # If first attempt fails, try one more time
     if not email:
-        print(f"🔓 AUTH: Token = {token[:30]}...")
+        print(f"🔓 AUTH: First attempt failed, retrying...")
         email = verify_magic_link(token, mark_used=False)
-        print(f"🔓 AUTH: Verified as {email}")
-        print(f"🔐 AUTH: Verification SUCCESS for {email}, redirecting to /dashboard")
+    
+    # If still no email after retry, redirect to login
+    if not email:
+        print(f"❌ AUTH: Token verification FAILED for {token[:30]}...")
+        return RedirectResponse("/login?error=invalid_token")
+    
+    # SUCCESS - Only reach this point if email is valid
+    print(f"✅ AUTH: Verification SUCCESS for {email}")
+    
+    # Create session properly
+    session_token = create_session_for_email(email)  # You need this function
+    # OR use a signed session ID instead of raw token
     
     response = RedirectResponse("/dashboard")
-    # Update cookie settings here:
     response.set_cookie(
         key="session", 
-        value=token,
+        value=session_token,  # Don't use raw magic token as session
         httponly=True,
         max_age=3600,
         samesite="lax",
-        secure=False
+        secure=False  # Set to True in production with HTTPS
     )
     return response
-
 @app.get("/settings")
 async def settings_page(request: Request, session: str = Cookie(default=None)):
     if not session:
