@@ -86,12 +86,17 @@ except Exception as e:
     traceback.print_exc()
 
 @app.get("/")
-async def public_root(request: Request):
-    """Public landing page - NO AUTH CHECK"""
-    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+async def root(request: Request):
+    """Public landing page"""
+    # Find your actual template directory
+    template_dir = os.path.join(os.path.dirname(__file__), "templates")
+    
+    # Check if templates exist there, if not try dashboard/templates
+    if not os.path.exists(os.path.join(template_dir, "frontpage.html")):
+        template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+    
     templates = Jinja2Templates(directory=template_dir)
     return templates.TemplateResponse("frontpage.html", {"request": request})
-
 
 
 # ========== HEALTH ENDPOINTS ==========
