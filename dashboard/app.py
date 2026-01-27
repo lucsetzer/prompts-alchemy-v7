@@ -86,7 +86,7 @@ async def dashboard_home(request: Request, session: str = Cookie(default=None)):
             {"name": "A11y Wizard", "cost": 0, "icon": "♿", "status": "ready"},
         ]
     })
-app.mount("/dashboard", dashboard_app)
+
     
 @app.get("/login")
 async def login_page(request: Request):
