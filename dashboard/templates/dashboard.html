@@ -370,13 +370,6 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
             document.getElementById('userEmail').textContent = '{{ user_email }}';
         }
         
-        function logout() {
-            if (confirm('Log out of Prompts Alchemy')) {
-                // Clear session
-                window.location.href = '/login';
-            }
-        }
-        
         // Load on start
         loadDashboard();
     </script>
