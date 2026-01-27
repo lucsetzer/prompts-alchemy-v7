@@ -165,9 +165,19 @@ async def frontpage_route(request: Request):
         """)
 
 
-@app.get("/test-frontpage")
-async def test_frontpage():
-    return PlainTextResponse("TEST WORKS - This route exists")
+# In combined_app.py - temporary
+@app.get("/debug-all-routes")
+async def debug_routes():
+    routes = []
+    for route in app.routes:
+        route_info = {
+            "path": getattr(route, "path", str(route)),
+            "name": getattr(route, "name", "unknown"),
+        }
+        if hasattr(route, "methods"):
+            route_info["methods"] = list(route.methods)
+        routes.append(route_info)
+    return {"routes": routes}
 
 
 
