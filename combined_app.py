@@ -211,7 +211,16 @@ async def debug_files():
 async def which_app():
     return {"message": "This is COMBINED_APP", "path": "/dashboard"}
 
-
+@app.get("/debug-routes")
+async def debug_routes():
+    routes = []
+    for route in app.routes:
+        routes.append({
+            "path": route.path,
+            "methods": list(route.methods) if hasattr(route, "methods") else []
+        })
+    return {"routes": routes}
+    
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
     import uvicorn
