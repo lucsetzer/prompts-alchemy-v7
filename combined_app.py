@@ -203,7 +203,19 @@ async def logout_route():
     response.delete_cookie("session_token")  # Add any other auth cookies
     return response
 
+import os
 
+@app.get("/debug-files")
+async def debug_files():
+    dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard")
+    
+    return {
+        "current_dir": os.path.dirname(__file__),
+        "dashboard_exists": os.path.exists(dashboard_path),
+        "files_in_dashboard": os.listdir(dashboard_path) if os.path.exists(dashboard_path) else "NOT FOUND",
+        "has_init": os.path.exists(os.path.join(dashboard_path, "__init__.py")) if os.path.exists(dashboard_path) else False,
+        "has_app": os.path.exists(os.path.join(dashboard_path, "app.py")) if os.path.exists(dashboard_path) else False,
+    }
 
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
