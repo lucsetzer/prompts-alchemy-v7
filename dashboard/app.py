@@ -87,7 +87,11 @@ async def dashboard_home(request: Request, session: str = Cookie(default=None)):
         ]
     })
 
-    
+@app.get("/which-app-dashboard")
+async def which_app():
+    return {"message": "This is COMBINED_APP", "path": "/dashboard"}
+
+
 @app.get("/login")
 async def login_page(request: Request):
     """Login form"""
