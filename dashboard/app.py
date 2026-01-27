@@ -167,31 +167,6 @@ async def auth_callback(token: str):
     )
     return response
 
-@app.get("/dashboard")
-async def dashboard_page(request: Request, session: str = Cookie(default=None)):
-    """Explicit dashboard page - same as root"""
-    # Copy the EXACT same code from the `/` route
-    if not session:
-        return RedirectResponse("/login")
-    
-    print(f"🔓 DASHBOARD: Session = {session[:30] if session else 'None'}")
-    email = verify_magic_link(session, mark_used=False)
-    print(f"🔓 DASHBOARD: Verified as {email}")
-    if not email:
-        return RedirectResponse("/login")
-    
-    balance = get_user_balance(email)
-    
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request,
-        "user_email": email,
-        "balance": balance,
-        "apps": [
-            {"name": "Thumbnail Wizard", "cost": 4, "icon": "🖼️", "status": "ready"},
-            # ... same apps list
-        ]
-    })
-
 @app.get("/settings")
 async def settings_page(request: Request, session: str = Cookie(default=None)):
     if not session:
