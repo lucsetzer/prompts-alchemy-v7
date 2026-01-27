@@ -102,36 +102,24 @@ async def health_check():
         "version": "2.0.0"
     }
 
-# In combined_app.py
 @app.get("/")
-async def root(request: Request, session: str = Cookie(default=None)):
-    """Server decides: frontpage or dashboard"""
-    # Check if user has valid session
-    if session and verify_magic_link(session, mark_used=False):
-        # User is logged in - redirect to dashboard
-        return RedirectResponse("/dashboard")
-    else:
-        # User not logged in - show public frontpage
-        template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
-        templates = Jinja2Templates(directory=template_dir)
-        return templates.TemplateResponse("frontpage.html", {"request": request})
+async def root(request: Request):
+    """PUBLIC frontpage - NO authentication check"""
+    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+    templates = Jinja2Templates(directory=template_dir)
+    return templates.TemplateResponse("frontpage.html", {"request": request})
 
-@app.get("/dashboard")  
-async def dashboard_home(request: Request, session: str = Cookie(default=None)):
-    """Main dashboard - requires login"""
-    print(f"🎯 ROOT ROUTE: Session cookie present? {'YES' if session else 'NO'}")
-    
+@app.get("/dashboard")
+async def dashboard_page(request: Request, session: str = Cookie(default=None)):
+    """PRIVATE dashboard - requires login"""
     if not session:
-        print("🎯 Redirecting to /login (no session)")
-        return RedirectResponse("/login")
+        return RedirectResponse("/login")  # Redirect to login if no session
     
-    print(f"🔓 ROOT: Session = {session[:30] if session else 'None'}")
     email = verify_magic_link(session, mark_used=False)
-    print(f"🔓 ROOT: Verified as {email}")
-    
     if not email:
-        print("🎯 Redirecting to /login (invalid session)")
-        return RedirectResponse("/login")
+        return RedirectResponse("/login")  # Redirect if invalid session
+    
+    # ... show dashboard ...
     
     print(f"🎯 SUCCESS! Showing dashboard for {email}")
     
