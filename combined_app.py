@@ -115,14 +115,20 @@ async def health_check():
 async def root(request: Request, session: str = Cookie(default=None)):
     """Server decides: frontpage or dashboard"""
     # Check if user has valid session
-    if session and verify_session(session):  # Your session verification
-        # User is logged in - redirect to dashboard
-        return RedirectResponse("/dashboard")
-    else:
-        # User not logged in - show public frontpage
-        template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
-        templates = Jinja2Templates(directory=template_dir)
-        return templates.TemplateResponse("frontpage.html", {"request": request})
+    if session:
+        try:
+            is_valid = verify_session(session)
+            if is_valid:
+                # User is logged in - redirect to dashboard
+                return RedirectResponse("/dashboard")
+        except Exception as e:
+            print(f"⚠️ Session verification error: {e}")
+            # Fall through to show frontpage
+    
+    # User not logged in OR session invalid - show public frontpage
+    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+    templates = Jinja2Templates(directory=template_dir)
+    return templates.TemplateResponse("frontpage.html", {"request": request})
 
 
 @app.get("/frontpage")
