@@ -9,6 +9,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from dashboard.app import app as dashboard_app
 import os
 import sys
+from fastapi import Cookie as FastAPICookie
+
+print("=== DEBUG IMPORTS ===")
+print("Cookie imported?", "Cookie" in dir())
 
 # Define dashboard_path before using it
 dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard")
