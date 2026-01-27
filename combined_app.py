@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from dashboard.app import app as dashboard_app
 import os
 import sys
 
