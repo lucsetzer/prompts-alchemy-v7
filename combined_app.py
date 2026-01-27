@@ -124,6 +124,21 @@ async def health_check():
         "version": "2.0.0"
     }
 
+# In combined_app.py
+@app.get("/")
+async def root(request: Request, session: str = Cookie(default=None)):
+    """Server decides: frontpage or dashboard"""
+    # Check if user has valid session
+    if session and verify_session(session):  # Your session verification
+        # User is logged in - redirect to dashboard
+        return RedirectResponse("/dashboard")
+    else:
+        # User not logged in - show public frontpage
+        template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+        templates = Jinja2Templates(directory=template_dir)
+        return templates.TemplateResponse("frontpage.html", {"request": request})
+
+
 @app.get("/frontpage")
 async def frontpage_route(request: Request):
     """Explicit frontpage route with debugging"""
