@@ -340,6 +340,11 @@ async def prompt_wizard_intro(request: Request, session: str = Cookie(default=No
         "user_email": email
     })
 
+@app.get("/which-app-dashboard") 
+async def which_app():
+    return {"message": "This is DASHBOARD/APP", "path": "/dashboard"}
+
+
 
 if __name__ == "__main__":
     import uvicorn
