@@ -221,6 +221,11 @@ async def debug_files():
         "has_app": os.path.exists(os.path.join(dashboard_path, "app.py")) if os.path.exists(dashboard_path) else False,
     }
 
+@app.get("/which-app-dashboard")
+async def which_app():
+    return {"message": "This is COMBINED_APP", "path": "/dashboard"}
+
+
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
     import uvicorn
