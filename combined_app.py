@@ -194,6 +194,14 @@ async def debug_routes():
         routes.append(route_info)
     return {"routes": routes}
 
+@app.get("/logout")
+async def logout_route():
+    """Server-side logout - clears cookies"""
+    response = RedirectResponse("/")
+    response.delete_cookie("session")
+    response.delete_cookie("session_token")  # Add any other auth cookies
+    return response
+
 
 
 # ========== MAIN FOR LOCAL TESTING ==========
