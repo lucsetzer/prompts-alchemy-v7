@@ -57,12 +57,6 @@ try:
 except ImportError as e:
     print(f"⚠ Could not import auth routes: {e}")
 
-# 3. Define root routes in combined_app.py itself
-@app.get("/")
-async def root():
-    return RedirectResponse("/login")
-
-
 # ========== MOUNT BANK API ==========
 print("🔧 Loading Bank API...")
 try:
