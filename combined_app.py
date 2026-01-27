@@ -91,33 +91,15 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-@app.get("/", response_class=HTMLResponse)
-async def frontpage(request: Request):
-    """Serve the frontpage.html template"""
-    import os
-    from fastapi.templating import Jinja2Templates
-    
-    # DEBUG: Print paths
-    print("=" * 60)
-    print("DEBUG FRONTPAGE ROUTE")
-    print(f"Current file: {__file__}")
-    print(f"Current directory: {os.path.dirname(__file__)}")
-    
+@app.get("/")
+async def public_root(request: Request):
+    """Public landing page - NO AUTH CHECK"""
     template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
-    print(f"Template directory: {template_dir}")
-    print(f"Directory exists: {os.path.exists(template_dir)}")
-    
-    if os.path.exists(template_dir):
-        print(f"Files in template directory: {os.listdir(template_dir)}")
-    
     templates = Jinja2Templates(directory=template_dir)
-    print("=" * 60)
-    
-    return templates.TemplateResponse("frontpage.html", {
-        "request": request
-    })
-# Mount dashboard at /app (NOT /)
-app.mount("/app", dashboard_app)
+    return templates.TemplateResponse("frontpage.html", {"request": request})
+
+# THEN mount dashboard
+app.mount("/", dashboard_app)  # This will handle /dashboard, /login, etc.
 
 # ========== HEALTH ENDPOINTS ==========
 @app.get("/health")
