@@ -149,7 +149,7 @@ async def debug_all():
     """)
 
 @app.get("/auth")
-async def auth_callback(token: str):
+async def auth_callback(token: str, request: Request, response: Response):
     print(f"🔐 AUTH: Token received {token[:30]}...")
     
     # Try verification
@@ -168,20 +168,19 @@ async def auth_callback(token: str):
     # SUCCESS - Only reach this point if email is valid
     print(f"✅ AUTH: Verification SUCCESS for {email}")
     
-    # Create session properly
-    session_token = create_session_for_email(email)  # You need this function
-    # OR use a signed session ID instead of raw token
-    
+    # Set cookie with the token itself for now
+    # LATER: Replace with proper session management
     response = RedirectResponse("/dashboard")
     response.set_cookie(
         key="session", 
-        value=session_token,  # Don't use raw magic token as session
+        value=token,  # Using token as session for now
         httponly=True,
         max_age=3600,
         samesite="lax",
-        secure=False  # Set to True in production with HTTPS
+        secure=True  # MUST be True on Render
     )
     return response
+    
 @app.get("/settings")
 async def settings_page(request: Request, session: str = Cookie(default=None)):
     if not session:
