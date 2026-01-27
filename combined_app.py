@@ -1,7 +1,7 @@
 """
 COMBINED APP: Bank API + Dashboard for Render deployment
 """
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Cookie
 from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
