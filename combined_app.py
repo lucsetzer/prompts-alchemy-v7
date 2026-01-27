@@ -98,8 +98,7 @@ async def public_root(request: Request):
     templates = Jinja2Templates(directory=template_dir)
     return templates.TemplateResponse("frontpage.html", {"request": request})
 
-# THEN mount dashboard
-app.mount("/", dashboard_app)  # This will handle /dashboard, /login, etc.
+
 
 # ========== HEALTH ENDPOINTS ==========
 @app.get("/health")
