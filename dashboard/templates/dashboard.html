@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,6 +95,12 @@
             border: 1px solid #2d3748;
             transition: all 0.3s ease;
             cursor: pointer;
+        }
+
+        .app-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
         
         .app-card:hover {
@@ -274,7 +283,7 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
         <!-- App Grid - FIXED VERSION -->
 <main class="dashboard-grid">
     <!-- Thumbnail Wizard Card -->
-    <div class="app-card" onclick="window.location.href='/app/thumbnail-wizard/intro'">
+    <a href="/thumbnail-wizard" class="app-card-link">
         <div class="app-header">
             <i class="fas fa-image"></i>
             <span class="app-cost">4 tokens</span>
@@ -285,7 +294,7 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
     </div>
     
     <!-- Document Wizard Card -->
-    <div class="app-card" onclick="window.location.href='/app/document-wizard/intro'">
+    <a href="/document-wizard" class="app-card-link">
         <div class="app-header">
             <i class="fas fa-file-alt"></i>
             <span class="app-cost">4 tokens</span>
@@ -296,7 +305,7 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
     </div>
     
     <!-- Hook Wizard Card -->
-    <div class="app-card" onclick="window.location.href='/app/hook-wizard/intro'">
+    <a href="/hook-wizard" class="app-card-link">
         <div class="app-header">
             <i class="fas fa-fish"></i>
             <span class="app-cost">4 tokens</span>
@@ -306,8 +315,8 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
         <button class="app-button">Launch</button>
     </div>
     
-    <!-- Prompts Wizard Card -->
-    <div class="app-card" onclick="window.location.href='/app/prompt-wizard/intro'">
+    <!-- Prompt Wizard Card -->
+    <a href="/prompt-wizard" class="app-card-link">
         <div class="app-header">
             <i class="fas fa-wand-magic"></i>
             <span class="app-cost">5 tokens</span>
@@ -318,7 +327,7 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
     </div>
     
     <!-- Script Wizard Card -->
-    <div class="app-card" onclick="window.location.href='/app/script-wizard/intro'">
+    <a href="/script-wizard" class="app-card-link">
         <div class="app-header">
             <i class="fas fa-scroll"></i>
             <span class="app-cost">3 tokens</span>
@@ -329,7 +338,7 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
     </div>
     
     <!-- A11y Wizard Card -->
-    <div class="app-card" onclick="window.location.href='/app/a11y-wizard/intro'">
+    <a href="/a11y-wizard" class="app-card-link">
         <div class="app-header">
             <i class="fas fa-universal-access"></i>
             <span class="app-cost">FREE</span>
@@ -362,16 +371,7 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
         </footer>
     </div>
     
-    <script>
-        // Fetch user data
-        async function loadDashboard() {
-            // In reality: Fetch from your bank API
-            document.getElementById('tokenBalance').textContent = '{{ balance }} tokens';
-            document.getElementById('userEmail').textContent = '{{ user_email }}';
-        }
-        
-        // Load on start
-        loadDashboard();
-    </script>
+    
 </body>
 </html>
+{% endblock %}
