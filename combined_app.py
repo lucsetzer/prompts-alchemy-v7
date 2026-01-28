@@ -85,18 +85,60 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
+from fastapi.templating import Jinja2Templates
+import os
+
 @app.get("/")
-async def root(request: Request):
-    """Public landing page"""
-    # Find your actual template directory
-    template_dir = os.path.join(os.path.dirname(__file__), "templates")
+async def public_root(request: Request):
+    """Public frontpage - NO login required"""
+    # Try multiple template locations
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), "templates"),
+        os.path.join(os.path.dirname(__file__), "dashboard", "templates"),
+        "templates",
+        "./templates"
+    ]
     
-    # Check if templates exist there, if not try dashboard/templates
-    if not os.path.exists(os.path.join(template_dir, "frontpage.html")):
-        template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+    for template_dir in possible_paths:
+        frontpage_path = os.path.join(template_dir, "frontpage.html")
+        if os.path.exists(frontpage_path):
+            print(f"✅ Found frontpage at: {frontpage_path}")
+            templates = Jinja2Templates(directory=template_dir)
+            return templates.TemplateResponse(
+                "frontpage.html", 
+                {"request": request, "app_name": "Prompts Alchemy"}
+            )
     
-    templates = Jinja2Templates(directory=template_dir)
-    return templates.TemplateResponse("frontpage.html", {"request": request})
+    # Fallback if template not found
+    from fastapi.responses import HTMLResponse
+    return HTMLResponse("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Prompts Alchemy</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    </head>
+    <body>
+        <main class="container">
+            <h1>🔮 Prompts Alchemy</h1>
+            <p>AI toolkit dashboard</p>
+            <a href="/login" role="button">Login</a>
+            <a href="/dashboard" role="button" secondary>Dashboard</a>
+        </main>
+    </body>
+    </html>
+    """)
+
+@app.get("/debug-templates")
+async def debug_templates():
+    import glob
+    templates = glob.glob("**/*.html", recursive=True)
+    return {
+        "current_dir": os.getcwd(),
+        "this_file": __file__,
+        "found_templates": templates,
+        "frontpage_exists": os.path.exists("templates/frontpage.html")
+    }
 
 
 # ========== HEALTH ENDPOINTS ==========
