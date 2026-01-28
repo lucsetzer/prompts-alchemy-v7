@@ -94,9 +94,9 @@ async def public_root(request: Request):
     """)
 
     @app.get("/dashboard")  
-async def dashboard_home(request: Request, session: str = Cookie(default=None)):
-    """Main dashboard - requires login"""
-    print(f"🎯 ROOT ROUTE: Session cookie present? {'YES' if session else 'NO'}")
+    async def dashboard_home(request: Request, session: str = Cookie(default=None)):
+        """Main dashboard - requires login"""
+        print(f"🎯 ROOT ROUTE: Session cookie present? {'YES' if session else 'NO'}")
     
     if not session:
         print("🎯 Redirecting to /login (no session)")
