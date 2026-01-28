@@ -395,7 +395,13 @@ async def prompt_wizard_intro(request: Request, session: str = Cookie(default=No
 async def which_app():
     return {"message": "This is DASHBOARD/APP", "path": "/dashboard"}
 
-
+@app.get("/debug-file")
+async def debug_file():
+    import dashboard
+    return {
+        "dashboard_module": dashboard.__file__,
+        "current_file": __file__
+    }
 
 if __name__ == "__main__":
     import uvicorn
