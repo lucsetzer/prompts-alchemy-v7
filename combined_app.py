@@ -14,6 +14,33 @@ from fastapi import Cookie as FastAPICookie
 template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
 templates = Jinja2Templates(directory=template_dir)
 
+# ========== DEBUG MOUNT ==========
+print("🔧 DEBUG: Checking mount setup...")
+
+# Test if dashboard/app.py can be imported
+try:
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("dashboard_app", "dashboard/app.py")
+    dashboard_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(dashboard_module)
+    
+    print(f"✅ dashboard/app.py loaded successfully")
+    print(f"✅ Has 'app' attribute: {hasattr(dashboard_module, 'app')}")
+    
+    # Mount it
+    app.mount("/dashboard", dashboard_module.app)
+    print(f"✅ Mounted at /dashboard")
+    
+    # List ALL routes
+    print(f"📋 All routes after mount:")
+    for route in app.routes:
+        print(f"  - {route.path}")
+    
+except Exception as e:
+    print(f"❌ Mount debug failed: {e}")
+    import traceback
+    traceback.print_exc()
+
 
 print("=== DEBUG IMPORTS ===")
 print("Cookie imported?", "Cookie" in dir())
