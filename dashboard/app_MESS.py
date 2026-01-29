@@ -51,8 +51,7 @@ def get_user_balance(email: str):
     conn.close()
     return balance
 
-
-
+print(f"🚨 LOADED: {__file__}")
 
 if __name__ == "__main__":
     import uvicorn
