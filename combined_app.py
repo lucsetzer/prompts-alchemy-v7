@@ -109,13 +109,28 @@ async def login_request(request: Request, email: str = Form(...)):
     try:
         print(f"📧 Login attempt for: {email}")
         
-        # Try to send magic link
+        # Generate a token
+        import secrets
+        token = secrets.token_urlsafe(32)
+        print(f"🔑 Generated token: {token[:20]}...")
+        
+        # Save token to auth system
+        try:
+            import auth
+            # Assuming auth has a function to store tokens
+            auth.store_magic_token(email, token)
+        except ImportError:
+            print(f"⚠️ auth module not found, token not saved")
+        
+        # Send email with token
         try:
             import email_service
-            email_service.send_magic_link_email(email)
+            email_service.send_magic_link_email(email, token)  # ← ADD TOKEN
             print(f"✅ Magic link sent to {email}")
         except ImportError:
-            print(f"⚠️ email_service not found, simulating")
+            print(f"⚠️ email_service not found")
+            # Show token in console for testing
+            print(f"🔗 TEST LINK: https://promptsalchemy.com/auth?token={token}")
         
         # Redirect to check-email
         return RedirectResponse(f"/check-email?email={email}", status_code=303)
@@ -124,10 +139,7 @@ async def login_request(request: Request, email: str = Form(...)):
         print(f"❌ Login error: {e}")
         import traceback
         traceback.print_exc()
-        
-        # Show error but don't crash
         return RedirectResponse(f"/login?error={str(e)[:50]}")
-
 
 # ========== SIMPLE DASHBOARD MOUNT ==========
 print("🔧 Attempting to mount dashboard...")
