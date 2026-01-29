@@ -217,6 +217,15 @@ async def frontpage_route(request: Request):
         <p>Template dir: {template_dir}</p>
         """)
 
+@app.get("/check-email")
+async def check_email_page(request: Request, email: str):
+    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+    templates = Jinja2Templates(directory=template_dir)
+    return templates.TemplateResponse("check_email.html", {
+        "request": request,
+        "email": email
+    })
+
 
 # In combined_app.py - temporary
 @app.get("/debug-all-routes")
