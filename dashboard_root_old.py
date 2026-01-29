@@ -41,6 +41,9 @@ def what_i_get_api(tier: str):
         return {"error": "Tier not found"}
     return calculate_what_you_get(tier)
 
+print(f"🚨 LOADED: {__file__}")
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)  # Different port from your bank
