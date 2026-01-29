@@ -194,15 +194,6 @@ try:
     
 except Exception as e:
     print(f"❌ Mount failed: {e}")
-    
-    # Create a simple dashboard route as fallback
-    @app.get("/dashboard")
-    async def dashboard_fallback(request: Request):
-        return {
-            "error": "Dashboard not mounted",
-            "detail": str(e),
-            "note": "Check dashboard/app.py exists and has 'app = FastAPI()'"
-        }
 
 @app.get("/debug-templates")
 async def debug_templates():
