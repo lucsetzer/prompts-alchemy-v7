@@ -52,20 +52,18 @@ def get_user_balance(email: str):
     return balance
 
 # Routes
-
-
-    @app.get("/")  
-    async def dashboard_home(request: Request, session: str = Cookie(default=None)):
-        """Main dashboard - requires login"""
-        print(f"🎯 ROOT ROUTE: Session cookie present? {'YES' if session else 'NO'}")
+@app.get("/")  # This becomes /dashboard/ when mounted
+async def dashboard_home(request: Request, session: str = Cookie(default=None)):
+    """Main dashboard - requires login"""
+    print(f"🎯 DASHBOARD ROUTE: Session cookie present? {'YES' if session else 'NO'}")
     
     if not session:
         print("🎯 Redirecting to /login (no session)")
         return RedirectResponse("/login")
     
-    print(f"🔓 ROOT: Session = {session[:30] if session else 'None'}")
+    print(f"🔓 DASHBOARD: Session = {session[:30] if session else 'None'}")
     email = verify_magic_link(session, mark_used=False)
-    print(f"🔓 ROOT: Verified as {email}")
+    print(f"🔓 DASHBOARD: Verified as {email}")
     
     if not email:
         print("🎯 Redirecting to /login (invalid session)")
