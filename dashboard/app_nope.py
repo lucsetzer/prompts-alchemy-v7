@@ -353,7 +353,7 @@ async def prompt_wizard_intro(request: Request, session: str = Cookie(default=No
 async def which_app():
     return {"message": "This is DASHBOARD/APP", "path": "/dashboard"}
 
-
+print(f"🚨 LOADED: {__file__}")
 
 if __name__ == "__main__":
     import uvicorn
