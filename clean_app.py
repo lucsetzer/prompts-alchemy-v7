@@ -55,6 +55,15 @@ async def dashboard(request: Request, session: str = Cookie(default=None)):
         ]
     })
 
+# In clean_app.py, add after /login route:
+@app.get("/check-email")
+async def check_email(request: Request, email: str):
+    return templates.TemplateResponse("check_email.html", {
+        "request": request,
+        "email": email
+    })
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=10000)
