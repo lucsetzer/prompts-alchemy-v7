@@ -109,46 +109,24 @@ async def login_request(request: Request, email: str = Form(...)):
     try:
         print(f"📧 Login attempt for: {email}")
         
-        # Check what's available
-        import sys
-        print(f"   Python path: {sys.path}")
-        
-        # Try to import email_service
+        # Try to send magic link
         try:
             import email_service
-            print(f"   ✅ email_service found at: {email_service.__file__}")
             email_service.send_magic_link_email(email)
-            print(f"   ✅ Magic link sent")
-        except ImportError as ie:
-            print(f"   ❌ email_service import failed: {ie}")
-            # Simulate for now
-            print(f"   📝 Would send magic link to {email}")
+            print(f"✅ Magic link sent to {email}")
+        except ImportError:
+            print(f"⚠️ email_service not found, simulating")
         
-        # Try to import auth for token generation
-        try:
-            import auth
-            print(f"   ✅ auth found at: {auth.__file__}")
-        except ImportError as ie:
-            print(f"   ❌ auth import failed: {ie}")
-        
-        # Redirect
-        print(f"   🔀 Redirecting to /check-email")
-        return RedirectResponse(
-            url=f"/check-email?email={email}",
-            status_code=303  # Important for POST→GET redirect
-        )
+        # Redirect to check-email
+        return RedirectResponse(f"/check-email?email={email}", status_code=303)
         
     except Exception as e:
-        print(f"❌ LOGIN CRASH: {e}")
+        print(f"❌ Login error: {e}")
         import traceback
         traceback.print_exc()
         
-        # Return error page
-        return HTMLResponse(f"""
-        <h1>Login Error</h1>
-        <pre>{traceback.format_exc()}</pre>
-        <a href="/login">Try Again</a>
-        """)
+        # Show error but don't crash
+        return RedirectResponse(f"/login?error={str(e)[:50]}")
 
 
 # ========== SIMPLE DASHBOARD MOUNT ==========
