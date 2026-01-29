@@ -117,10 +117,9 @@ async def login_request(request: Request, email: str = Form(...)):
         # Save token to auth system
         try:
             import auth
-            # Assuming auth has a function to store tokens
-            auth.store_magic_token(email, token)
+            auth.store_magic_token(email, token)  # or whatever function exists
         except ImportError:
-            print(f"⚠️ auth module not found, token not saved")
+            print(f"⚠️ Could not save token")
         
         # Send email with token
         try:
