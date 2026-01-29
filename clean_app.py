@@ -82,6 +82,19 @@ async def dashboard(request: Request, session: str = Cookie(default=None)):
         "apps": [...]
     })
 
+@app.get("/settings")
+async def settings(request: Request, session: str = Cookie(default=None)):
+    if not session:
+        return RedirectResponse("/login")
+    
+    return templates.TemplateResponse("settings.html", {"request": request})
+
+@app.get("/logout")
+async def logout():
+    response = RedirectResponse("/")
+    response.delete_cookie(key="session")
+    return response
+
 # In clean_app.py, add after /login route:
 @app.get("/check-email")
 async def check_email(request: Request, email: str):
