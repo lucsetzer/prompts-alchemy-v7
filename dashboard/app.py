@@ -368,9 +368,12 @@ print(f"🚨 dashboard/app.py LOADED. Routes being registered:")
 for route in app.routes:
     print(f"  - {route.path}")
 
-print(f"📁 dashboard/app.py template directory: {templates.directory}")
+print(f"📁 dashboard/app.py template directory check")
 print(f"📁 Current dir: {os.getcwd()}")
-print(f"📁 dashboard.html exists: {os.path.exists('templates/dashboard.html')}")
+print(f"📁 Template search:")
+for path in ["templates", "dashboard/templates", "./templates", "/opt/render/project/src/templates"]:
+    exists = os.path.exists(os.path.join(path, "dashboard.html"))
+    print(f"  - {path}/dashboard.html: {'✅' if exists else '❌'}")
 
 
 if __name__ == "__main__":
