@@ -95,7 +95,32 @@ async def public_root(request: Request):
                 {"request": request, "app_name": "Prompts Alchemy"}
             )
     
-    # Fallback...
+# ========== SIMPLE DASHBOARD MOUNT ==========
+print("🔧 Attempting to mount dashboard...")
+
+try:
+    # Import the module directly
+    import importlib
+    dashboard_module = importlib.import_module("dashboard.app")
+    
+    # Get the FastAPI app instance
+    dashboard_app = dashboard_module.app
+    
+    # Mount it
+    app.mount("/dashboard", dashboard_app)
+    print("✅ Dashboard mounted at /dashboard")
+    
+except Exception as e:
+    print(f"❌ Mount failed: {e}")
+    
+    # Create a simple dashboard route as fallback
+    @app.get("/dashboard")
+    async def dashboard_fallback(request: Request):
+        return {
+            "error": "Dashboard not mounted",
+            "detail": str(e),
+            "note": "Check dashboard/app.py exists and has 'app = FastAPI()'"
+        }
 
 @app.get("/debug-templates")
 async def debug_templates():
