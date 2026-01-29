@@ -61,25 +61,28 @@ async def dashboard(request: Request, session: str = Cookie(default=None)):
     if not session:
         return RedirectResponse("/login")
     
-    # Get real email from token
-    email = "user@example.com"  # Default
+    email = "user@example.com"
+    balance = 100
     
-    try:
-        from bank_auth import verify_magic_link
-        real_email = verify_magic_link(session)
-        if real_email:
-            email = real_email
-            print(f"✅ Real email: {email}")
-    except ImportError:
-        print(f"⚠️ Using mock email")
+    # DEBUG: Print apps list
+    apps_list = [
+        {"name": "Thumbnail Wizard", "cost": 4, "icon": "🖼️", "status": "ready"},
+        {"name": "Document Wizard", "cost": 4, "icon": "📄", "status": "ready"},
+        {"name": "Hook Wizard", "cost": 4, "icon": "🎣", "status": "ready"},
+        {"name": "Prompt Wizard", "cost": 5, "icon": "✨", "status": "ready"},
+        {"name": "Script Wizard", "cost": 3, "icon": "📝", "status": "ready"},
+        {"name": "A11y Wizard", "cost": 0, "icon": "♿", "status": "ready"},
+    ]
     
-    balance = 100  # Get from DB later
+    print(f"📊 Passing {len(apps_list)} apps to template")
+    for app in apps_list:
+        print(f"  - {app['name']}")
     
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
-        "user_email": email,  # This should now show real email
+        "user_email": email,
         "balance": balance,
-        "apps": [...]
+        "apps": apps_list  # Make sure this variable name matches template
     })
 
 @app.get("/settings")
