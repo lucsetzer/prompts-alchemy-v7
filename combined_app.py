@@ -94,7 +94,30 @@ async def public_root(request: Request):
                 "frontpage.html", 
                 {"request": request, "app_name": "Prompts Alchemy"}
             )
-    
+
+@app.get("/login")
+async def login_page(request: Request):
+    """Login form"""
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@app.post("/login")
+async def login_request(email: str = Form(...)):
+    """Send magic link - CORRECTED"""
+    # Create token first
+    token = create_magic_link(email)
+    # Send email with token
+    send_magic_link_email(email, token)
+
+    # Create a mock request for the template
+    from fastapi import Request
+    mock_request = Request(scope={"type": "http"})
+
+    return templates.TemplateResponse("check_email.html", {
+        "request": mock_request,
+        "email": email
+    })
+
+
 # ========== SIMPLE DASHBOARD MOUNT ==========
 print("🔧 Attempting to mount dashboard...")
 
