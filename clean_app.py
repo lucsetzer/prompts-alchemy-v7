@@ -61,22 +61,25 @@ async def dashboard(request: Request, session: str = Cookie(default=None)):
     if not session:
         return RedirectResponse("/login")
     
-    # Mock user
-    email = "user@example.com"
-    balance = 100
+    # Get real email from token
+    email = "user@example.com"  # Default
+    
+    try:
+        from bank_auth import verify_magic_link
+        real_email = verify_magic_link(session)
+        if real_email:
+            email = real_email
+            print(f"✅ Real email: {email}")
+    except ImportError:
+        print(f"⚠️ Using mock email")
+    
+    balance = 100  # Get from DB later
     
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
-        "user_email": email,
+        "user_email": email,  # This should now show real email
         "balance": balance,
-        "apps": [
-            {"name": "Thumbnail", "cost": 4, "icon": "🖼️"},
-            {"name": "Document", "cost": 4, "icon": "📄"},
-            {"name": "Hook", "cost": 4, "icon": "🎣"},
-            {"name": "Prompt", "cost": 5, "icon": "✨"},
-            {"name": "Script", "cost": 3, "icon": "📝"},
-            {"name": "A11y", "cost": 0, "icon": "♿"},
-        ]
+        "apps": [...]
     })
 
 # In clean_app.py, add after /login route:
