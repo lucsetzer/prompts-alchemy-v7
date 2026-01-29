@@ -69,6 +69,12 @@ except Exception as e:
     print(f"❌ Failed to load Bank API: {e}")
 
 # ========== MOUNT DASHBOARD ==========
+@app.get("/dashboard")
+async def protect_dashboard(request: Request, session: str = Cookie(default=None)):
+    """This intercepts /dashboard to check auth"""
+    if not session or not verify_session(session):
+        return RedirectResponse("/login")
+
 print("🔧 Loading Dashboard...")
 try:
     # Add dashboard to Python path
@@ -78,8 +84,8 @@ try:
     # Import dashboard app
     from app import app as dashboard_app
     # Mount at root /
-    app.mount("/", dashboard_app)
-    print("✅ Dashboard mounted at /")
+    app.mount("/dashboard", dashboard_app)
+    print("✅ Dashboard mounted at /dashboard")
 except Exception as e:
     print(f"❌ Failed to load Dashboard: {e}")
     import traceback
@@ -150,26 +156,6 @@ async def health_check():
         "service": "prompts-alchemy-combined",
         "version": "2.0.0"
     }
-
-# In combined_app.py
-@app.get("/")
-async def root(request: Request, session: str = Cookie(default=None)):
-    """Server decides: frontpage or dashboard"""
-    # Check if user has valid session
-    if session:
-        try:
-            is_valid = verify_session(session)
-            if is_valid:
-                # User is logged in - redirect to dashboard
-                return RedirectResponse("/dashboard")
-        except Exception as e:
-            print(f"⚠️ Session verification error: {e}")
-            # Fall through to show frontpage
-    
-    # User not logged in OR session invalid - show public frontpage
-    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
-    templates = Jinja2Templates(directory=template_dir)
-    return templates.TemplateResponse("frontpage.html", {"request": request})
 
 
 @app.get("/frontpage")
