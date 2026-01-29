@@ -8,12 +8,6 @@ from pathlib import Path
 
 print("🚀 dashboard/app.py starting...")
 import traceback
-try:
-    # All your existing dashboard/app.py code here
-except Exception as e:
-    print(f"💥 dashboard/app.py CRASHED: {e}")
-    traceback.print_exc()
-    raise
 
 
 # Add parent directory to path to import auth modules
