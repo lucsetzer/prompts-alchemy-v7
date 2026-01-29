@@ -56,40 +56,46 @@ def get_user_balance(email: str):
     return balance
 
 # Routes
-@app.get("/")  # This becomes /dashboard/ when mounted
-async def dashboard_home(request: Request, session: str = Cookie(default=None)):
-    """Main dashboard - requires login"""
-    print(f"🎯 DASHBOARD ROUTE: Session cookie present? {'YES' if session else 'NO'}")
+@app.get("/")
+async def public_root(request: Request):
+    """Public frontpage - NO login required"""
+    # Try multiple template locations
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), "dashboard", "templates"),
+        os.path.join(os.path.dirname(__file__), "templates"),
+        "templates",
+        "./templates"
+    ]
     
-    if not session:
-        print("🎯 Redirecting to /login (no session)")
-        return RedirectResponse("/login")
+    for template_dir in possible_paths:
+        frontpage_path = os.path.join(template_dir, "frontpage.html")
+        if os.path.exists(frontpage_path):
+            print(f"✅ Found frontpage at: {frontpage_path}")
+            templates = Jinja2Templates(directory=template_dir)
+            return templates.TemplateResponse(
+                "frontpage.html", 
+                {"request": request, "app_name": "Prompts Alchemy"}
+            )
     
-    print(f"🔓 DASHBOARD: Session = {session[:30] if session else 'None'}")
-    email = verify_magic_link(session, mark_used=False)
-    print(f"🔓 DASHBOARD: Verified as {email}")
-    
-    if not email:
-        print("🎯 Redirecting to /login (invalid session)")
-        return RedirectResponse("/login")
-    
-    print(f"🎯 SUCCESS! Showing dashboard for {email}")
-    
-    balance = get_user_balance(email)
-    
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request,
-        "user_email": email,
-        "balance": balance,
-        "apps": [
-            {"name": "Thumbnail Wizard", "cost": 4, "icon": "🖼️", "status": "ready"},
-            {"name": "Document Wizard", "cost": 4, "icon": "📄", "status": "ready"},
-            {"name": "Hook Wizard", "cost": 4, "icon": "🎣", "status": "ready"},
-            {"name": "Prompt Wizard", "cost": 5, "icon": "✨", "status": "ready"},
-            {"name": "Script Wizard", "cost": 3, "icon": "📝", "status": "ready"},
-            {"name": "A11y Wizard", "cost": 0, "icon": "♿", "status": "ready"},
-        ]
-    })
+    # Fallback if template not found
+    from fastapi.responses import HTMLResponse
+    return HTMLResponse("""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Prompts Alchemy</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    </head>
+    <body>
+        <main class="container">
+            <h1>🔮 Prompts Alchemy</h1>
+            <p>AI toolkit dashboard</p>
+            <a href="/login" role="button">Login</a>
+            <a href="/dashboard" role="button" secondary>Dashboard</a>
+        </main>
+    </body>
+    </html>
+    """)
 
 @app.get("/which-app-dashboard")
 async def which_app():
