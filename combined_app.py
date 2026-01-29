@@ -272,15 +272,16 @@ try:
     app.mount("/dashboard", dashboard_app)
     print("✅ Mounted at /dashboard")
     
-except Exception as e:
-    print(f"❌ Mount failed: {e}")
-    import traceback
-    traceback.print_exc()
+except Exception as mount_error:  # Change 'e' to 'mount_error'
+    print(f"❌ Mount failed: {mount_error}")
     
-    # Create fallback dashboard
     @app.get("/dashboard")
-    async def dashboard_fallback():
-        return {"error": "Dashboard mount failed", "detail": str(e)}
+    async def dashboard_fallback(request: Request):
+        return {
+            "error": "Dashboard mount failed", 
+            "detail": str(mount_error)  # Use the captured variable
+        }
+        
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
     import uvicorn
