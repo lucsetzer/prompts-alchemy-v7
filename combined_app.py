@@ -331,15 +331,16 @@ try:
     app.mount("/dashboard", dashboard_app)
     print("✅ Mounted at /dashboard")
     
-except Exception as mount_error:  # Change 'e' to 'mount_error'
-    print(f"❌ Mount failed: {mount_error}")
-    
-    @app.get("/dashboard")
-    async def dashboard_fallback(request: Request):
-        return {
-            "error": "Dashboard mount failed", 
-            "detail": str(mount_error)  # Use the captured variable
-        }
+except Exception as e:
+    print(f"❌ Mount failed: {e}")
+    import traceback
+    traceback.print_exc()
+    # NO fallback route - let /dashboard 404
+
+print(f"🔧 Checking dashboard/app.py exists...")
+dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard", "app.py")
+print(f"🔧 Path: {dashboard_path}")
+print(f"🔧 Exists: {os.path.exists(dashboard_path)}")
         
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
