@@ -76,6 +76,9 @@ async def logout():
     response.delete_cookie(key="session_id")
     return response
 
+print(f"🚨 LOADED: {__file__}")
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001, log_level="error")
