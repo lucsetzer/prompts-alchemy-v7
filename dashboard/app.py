@@ -52,46 +52,7 @@ def get_user_balance(email: str):
     return balance
 
 # Routes
-@app.get("/")
-async def public_root(request: Request):
-    """Public frontpage - NO login required"""
-    # Try multiple template locations
-    possible_paths = [
-        os.path.join(os.path.dirname(__file__), "templates"),
-        os.path.join(os.path.dirname(__file__), "dashboard", "templates"),
-        "templates",
-        "./templates"
-    ]
-    
-    for template_dir in possible_paths:
-        frontpage_path = os.path.join(template_dir, "frontpage.html")
-        if os.path.exists(frontpage_path):
-            print(f"✅ Found frontpage at: {frontpage_path}")
-            templates = Jinja2Templates(directory=template_dir)
-            return templates.TemplateResponse(
-                "frontpage.html", 
-                {"request": request, "app_name": "Prompts Alchemy"}
-            )
-    
-    # Fallback if template not found
-    from fastapi.responses import HTMLResponse
-    return HTMLResponse("""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Prompts Alchemy</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    </head>
-    <body>
-        <main class="container">
-            <h1>🔮 Prompts Alchemy</h1>
-            <p>AI toolkit dashboard</p>
-            <a href="/login" role="button">Login</a>
-            <a href="/dashboard" role="button" secondary>Dashboard</a>
-        </main>
-    </body>
-    </html>
-    """)
+
 
     @app.get("/")  
     async def dashboard_home(request: Request, session: str = Cookie(default=None)):
