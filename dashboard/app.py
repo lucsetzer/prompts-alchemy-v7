@@ -368,6 +368,10 @@ print(f"🚨 dashboard/app.py LOADED. Routes being registered:")
 for route in app.routes:
     print(f"  - {route.path}")
 
+print(f"📁 dashboard/app.py template directory: {templates.directory}")
+print(f"📁 Current dir: {os.getcwd()}")
+print(f"📁 dashboard.html exists: {os.path.exists('templates/dashboard.html')}")
+
 
 if __name__ == "__main__":
     import uvicorn
