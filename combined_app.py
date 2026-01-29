@@ -265,8 +265,26 @@ async def debug_routes():
     
 print(f"🚨 LOADED: {__file__}")
 
+# In combined_app.py - DEBUG VERSION
+print(f"🔧 COMBINED_APP LOADING: {__file__}")
 
-
+try:
+    print("Attempting to import dashboard.app...")
+    from dashboard.app import app as dashboard_app
+    print(f"✅ Imported dashboard.app from {dashboard_app.__file__}")
+    
+    app.mount("/dashboard", dashboard_app)
+    print("✅ Mounted at /dashboard")
+    
+except Exception as e:
+    print(f"❌ Mount failed: {e}")
+    import traceback
+    traceback.print_exc()
+    
+    # Create fallback dashboard
+    @app.get("/dashboard")
+    async def dashboard_fallback():
+        return {"error": "Dashboard mount failed", "detail": str(e)}
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
     import uvicorn
