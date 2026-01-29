@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prompt Alchemy Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <style>
         :root {
             --primary: #0cc0df;
@@ -245,7 +246,7 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
         <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; border-bottom: 1px solid #2d3748;">
     <div style="display: flex; align-items: center; gap: 1rem;">
         <i class="fas fa-hat-wizard" style="color: #0cc0df; font-size: 2rem;"></i>
-        <h1 style="color: #0cc0df; margin: 0;">Prompt Alchemy</h1>
+        <h1 style="color: #0cc0df; margin: 0;">Prompts Alchemy</h1>
     </div>
     
     <div style="display: flex; gap: 1.5rem;">
@@ -279,76 +280,21 @@ nav, table, tr, td, th, hr, .card, [class*="border"] {
             </div>
         </header>
         
-        <!-- App Grid - FIXED VERSION -->
-<main class="dashboard-grid">
-    <!-- Thumbnail Wizard Card -->
-    <a href="/thumbnail-wizard" class="app-card-link">
+       <main class="dashboard-grid">
+    {% for app in apps %}
+    <a href="/{{ app.name|lower|replace(' ', '-') }}-wizard" class="app-card-link">
         <div class="app-header">
-            <i class="fas fa-image"></i>
-            <span class="app-cost">4 tokens</span>
+            <i class="{{ app.icon }}"></i>
+            <span class="app-cost">{{ app.cost }} tokens</span>
         </div>
-        <h3 class="app-title">Thumbnail Wizard</h3>
-        <p class="app-desc">Professional thumbnail analysis & optimization</p>
+        <h3 class="app-title">{{ app.name }}</h3>
+        <p class="app-desc">{{ app.description }}</p>
         <button class="app-button">Launch</button>
-    </div>
-    
-    <!-- Document Wizard Card -->
-    <a href="/document-wizard" class="app-card-link">
-        <div class="app-header">
-            <i class="fas fa-file-alt"></i>
-            <span class="app-cost">4 tokens</span>
-        </div>
-        <h3 class="app-title">Document Wizard</h3>
-        <p class="app-desc">AI-powered document analysis & critique</p>
-        <button class="app-button">Launch</button>
-    </div>
-    
-    <!-- Hook Wizard Card -->
-    <a href="/hook-wizard" class="app-card-link">
-        <div class="app-header">
-            <i class="fas fa-fish"></i>
-            <span class="app-cost">4 tokens</span>
-        </div>
-        <h3 class="app-title">Hook Wizard</h3>
-        <p class="app-desc">Generate 3 viral hook ideas instantly</p>
-        <button class="app-button">Launch</button>
-    </div>
-    
-    <!-- Prompt Wizard Card -->
-    <a href="/prompt-wizard" class="app-card-link">
-        <div class="app-header">
-            <i class="fas fa-wand-magic"></i>
-            <span class="app-cost">5 tokens</span>
-        </div>
-        <h3 class="app-title">Prompts Wizard</h3>
-        <p class="app-desc">Optimize prompts for perfect AI results</p>
-        <button class="app-button">Launch</button>
-    </div>
-    
-    <!-- Script Wizard Card -->
-    <a href="/script-wizard" class="app-card-link">
-        <div class="app-header">
-            <i class="fas fa-scroll"></i>
-            <span class="app-cost">3 tokens</span>
-        </div>
-        <h3 class="app-title">Script Wizard</h3>
-        <p class="app-desc">Ready-to-use scripts</p>
-        <button class="app-button">Launch</button>
-    </div>
-    
-    <!-- A11y Wizard Card -->
-    <a href="/a11y-wizard" class="app-card-link">
-        <div class="app-header">
-            <i class="fas fa-universal-access"></i>
-            <span class="app-cost">FREE</span>
-        </div>
-        <h3 class="app-title">A11y Wizard</h3>
-        <p class="app-desc">Accessibility compliance checker</p>
-        <button class="app-button">Launch</button>
-    </div>
+    </a>
+    {% endfor %}
 </main>
 
-print(f"🚨 LOADED: {__file__}")
+
         
         <!-- Recent Activity -->
         <section class="activity-section">
