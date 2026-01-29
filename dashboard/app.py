@@ -405,6 +405,10 @@ async def debug_file():
 
 print(f"🚨 LOADED: {__file__}")
 
+print(f"🚨 dashboard/app.py LOADED. Routes being registered:")
+for route in app.routes:
+    print(f"  - {route.path}")
+
 
 if __name__ == "__main__":
     import uvicorn
