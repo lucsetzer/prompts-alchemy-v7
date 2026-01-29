@@ -14,31 +14,51 @@ from fastapi import Cookie as FastAPICookie
 template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
 templates = Jinja2Templates(directory=template_dir)
 
-# ========== DEBUG MOUNT ==========
-print("🔧 DEBUG: Checking mount setup...")
-
-# Test if dashboard/app.py can be imported
-try:
-    import importlib.util
-    spec = importlib.util.spec_from_file_location("dashboard_app", "dashboard/app.py")
-    dashboard_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(dashboard_module)
+@app.get("/dashboard")
+async def dashboard_route(request: Request, session: str = Cookie(default=None)):
+    """Main dashboard - requires login"""
+    print(f"🎯 DASHBOARD: Cookie received: {'YES' if session else 'NO'}")
     
-    print(f"✅ dashboard/app.py loaded successfully")
-    print(f"✅ Has 'app' attribute: {hasattr(dashboard_module, 'app')}")
+    if not session:
+        print("🎯 Redirecting to /login (no cookie)")
+        return RedirectResponse("/login")
     
+    # Try to verify token
+    try:
+        from bank_auth import verify_magic_link
+        email = verify_magic_link(session, mark_used=False)
+        if not email:
+            email = verify_magic_link(session, mark_used=False)  # Retry
+    except ImportError:
+        print(f"⚠️ Using mock verification")
+        email = "test@example.com"
     
+    if not email:
+        print("🎯 Redirecting to /login (invalid token)")
+        return RedirectResponse("/login")
     
-    # List ALL routes
-    print(f"📋 All routes after mount:")
-    for route in app.routes:
-        print(f"  - {route.path}")
+    print(f"🎯 SUCCESS! Showing dashboard for {email}")
     
-except Exception as e:
-    print(f"❌ Mount debug failed: {e}")
-    import traceback
-    traceback.print_exc()
-
+    # Get balance
+    balance = 100  # Mock - replace with your logic
+    
+    # Use same template directory as frontpage
+    template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+    templates = Jinja2Templates(directory=template_dir)
+    
+    return templates.TemplateResponse("dashboard.html", {
+        "request": request,
+        "user_email": email,
+        "balance": balance,
+        "apps": [
+            {"name": "Thumbnail Wizard", "cost": 4, "icon": "🖼️", "status": "ready"},
+            {"name": "Document Wizard", "cost": 4, "icon": "📄", "status": "ready"},
+            {"name": "Hook Wizard", "cost": 4, "icon": "🎣", "status": "ready"},
+            {"name": "Prompt Wizard", "cost": 5, "icon": "✨", "status": "ready"},
+            {"name": "Script Wizard", "cost": 3, "icon": "📝", "status": "ready"},
+            {"name": "A11y Wizard", "cost": 0, "icon": "♿", "status": "ready"},
+        ]
+    })
 
 print("=== DEBUG IMPORTS ===")
 print("Cookie imported?", "Cookie" in dir())
