@@ -15,8 +15,6 @@ template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
 templates = Jinja2Templates(directory=template_dir)
 
 @app.get("/dashboard")
-
-    """Main dashboard - requires login"""
     
     
     
