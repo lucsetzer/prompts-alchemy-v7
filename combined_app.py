@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from dashboard.app import app as dashboard_app
+
 import os
 import sys
 from fastapi import Cookie as FastAPICookie
@@ -15,13 +15,12 @@ template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
 templates = Jinja2Templates(directory=template_dir)
 
 @app.get("/dashboard")
-async def dashboard_route(request: Request, session: str = Cookie(default=None)):
+
     """Main dashboard - requires login"""
-    print(f"🎯 DASHBOARD: Cookie received: {'YES' if session else 'NO'}")
     
-    if not session:
-        print("🎯 Redirecting to /login (no cookie)")
-        return RedirectResponse("/login")
+    
+    
+    
     
     # Try to verify token
     try:
@@ -83,14 +82,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Pass template directory to dashboard app
-#dashboard_app.state.template_dir = os.path.join(dashboard_path, "templates")
 
 
 try:
     from dashboard.app import app as dashboard_app
     
-    print("✓ Dashboard mounted at /dashboard")
+    
 except ImportError as e:
     print(f"⚠ Could not import dashboard: {e}")
 
@@ -109,7 +106,7 @@ try:
     from central_bank import app as bank_app
     # Mount at /api
     
-    print("✅ Bank API mounted at /api")
+    
 except Exception as e:
     print(f"❌ Failed to load Bank API: {e}")
 
@@ -202,15 +199,15 @@ async def auth_callback(token: str):
 
 
 # ========== SIMPLE DASHBOARD MOUNT ==========
-print("🔧 Attempting to mount dashboard...")
+
 
 try:
     # Import the module directly
-    import importlib
-    dashboard_module = importlib.import_module("dashboard.app")
+    
+    
     
     # Get the FastAPI app instance
-    dashboard_app = dashboard_module.app
+    
     
     
 except Exception as e:
@@ -345,9 +342,7 @@ print(f"🚨 LOADED: {__file__}")
 print(f"🔧 COMBINED_APP LOADING: {__file__}")
 
 try:
-    print("Attempting to import dashboard.app...")
-    from dashboard.app import app as dashboard_app
-    print(f"✅ Imported dashboard.app from {dashboard_app.__file__}")
+    
     
 except Exception as e:
     print(f"❌ Mount failed: {e}")
@@ -355,7 +350,7 @@ except Exception as e:
     traceback.print_exc()
     # NO fallback route - let /dashboard 404
 
-print(f"🔧 Checking dashboard/app.py exists...")
+
 dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard", "app.py")
 print(f"🔧 Path: {dashboard_path}")
 print(f"🔧 Exists: {os.path.exists(dashboard_path)}")
