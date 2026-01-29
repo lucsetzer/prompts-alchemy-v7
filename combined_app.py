@@ -68,42 +68,7 @@ try:
 except Exception as e:
     print(f"❌ Failed to load Bank API: {e}")
 
-# ========== MOUNT DASHBOARD ==========
-@app.get("/dashboard")
-async def protect_dashboard(request: Request, session: str = Cookie(default=None)):
-    """This intercepts /dashboard to check auth"""
-    if not session or not verify_session(session):
-        return RedirectResponse("/login")
-
-print("🔧 Loading Dashboard...")
-try:
-    # Method 1: Direct file import
-    import importlib.util
-    dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard", "app.py")
     
-    spec = importlib.util.spec_from_file_location("dashboard_app", dashboard_path)
-    dashboard_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(dashboard_module)
-    
-    dashboard_app = dashboard_module.app
-    
-    # Mount at /dashboard
-    app.mount("/dashboard", dashboard_app)
-    print(f"✅ Dashboard mounted at /dashboard")
-    
-except Exception as e:
-    print(f"❌ Failed to load Dashboard: {e}")
-    import traceback
-    traceback.print_exc()
-    
-    # Create fallback dashboard route
-    @app.get("/dashboard")
-    async def dashboard_fallback(request: Request):
-        return HTMLResponse(f"""
-        <h1>Dashboard Error</h1>
-        <p>{str(e)}</p>
-        <a href="/">Home</a>
-        """)
 from fastapi.templating import Jinja2Templates
 import os
 
