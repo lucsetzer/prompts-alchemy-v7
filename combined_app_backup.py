@@ -206,6 +206,7 @@ async def debug_files():
 async def which_app():
     return {"message": "This is COMBINED_APP", "path": "/dashboard"}
 
+print(f"🚨 LOADED: {__file__}")
 
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
