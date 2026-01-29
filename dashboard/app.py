@@ -127,39 +127,6 @@ async def debug_all():
     </ul>
     <h2><a href="/login">Go to login page</a></h2>
     """)
-
-@app.get("/auth")
-async def auth_callback(token: str, request: Request, response: Response):
-    print(f"🔐 AUTH: Token received {token[:30]}...")
-    
-    # Try verification
-    email = verify_magic_link(token, mark_used=False)
-    
-    # If first attempt fails, try one more time
-    if not email:
-        print(f"🔓 AUTH: First attempt failed, retrying...")
-        email = verify_magic_link(token, mark_used=False)
-    
-    # If still no email after retry, redirect to login
-    if not email:
-        print(f"❌ AUTH: Token verification FAILED for {token[:30]}...")
-        return RedirectResponse("/login?error=invalid_token")
-    
-    # SUCCESS - Only reach this point if email is valid
-    print(f"✅ AUTH: Verification SUCCESS for {email}")
-    
-    # Set cookie with the token itself for now
-    # LATER: Replace with proper session management
-    response = RedirectResponse("/dashboard")
-    response.set_cookie(
-        key="session", 
-        value=token,  # Using token as session for now
-        httponly=True,
-        max_age=3600,
-        samesite="lax",
-        secure=True  # MUST be True on Render
-    )
-    return response
     
 @app.get("/settings")
 async def settings_page(request: Request, session: str = Cookie(default=None)):
