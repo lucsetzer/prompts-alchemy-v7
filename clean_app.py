@@ -20,7 +20,31 @@ async def login_page(request: Request):
 
 @app.post("/login")
 async def login_request(email: str = Form(...)):
-    print(f"Login: {email}")
+    print(f"📧 Login request for: {email}")
+    
+    # Generate token
+    import secrets
+    token = secrets.token_urlsafe(32)
+    print(f"🔑 Generated token: {token[:20]}...")
+    
+    # Try to send email
+    try:
+        # Adjust based on your email_service module
+        from email_service import send_magic_link_email
+        send_magic_link_email(email, token)
+        print(f"✅ Email sent to {email}")
+    except ImportError:
+        print(f"⚠️ email_service not found")
+        # Show token in console for testing
+        print(f"🔗 TEST LINK: https://promptsalchemy.com/auth?token={token}")
+    
+    # Try to save token (optional)
+    try:
+        from bank_auth import store_magic_token
+        store_magic_token(email, token)
+    except ImportError:
+        print(f"⚠️ bank_auth not found")
+    
     return RedirectResponse(f"/check-email?email={email}", status_code=303)
 
 # 3. Auth
