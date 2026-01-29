@@ -93,7 +93,7 @@ async def public_root(request: Request):
     </html>
     """)
 
-    @app.get("/dashboard")  
+    @app.get("/")  
     async def dashboard_home(request: Request, session: str = Cookie(default=None)):
         """Main dashboard - requires login"""
         print(f"🎯 ROOT ROUTE: Session cookie present? {'YES' if session else 'NO'}")
