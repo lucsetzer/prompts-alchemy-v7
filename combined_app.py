@@ -11,6 +11,10 @@ import os
 import sys
 from fastapi import Cookie as FastAPICookie
 
+template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
+templates = Jinja2Templates(directory=template_dir)
+
+
 print("=== DEBUG IMPORTS ===")
 print("Cookie imported?", "Cookie" in dir())
 
