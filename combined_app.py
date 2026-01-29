@@ -263,6 +263,10 @@ async def debug_routes():
         })
     return {"routes": routes}
     
+print(f"🚨 LOADED: {__file__}")
+
+
+
 # ========== MAIN FOR LOCAL TESTING ==========
 """if __name__ == "__main__":
     import uvicorn
