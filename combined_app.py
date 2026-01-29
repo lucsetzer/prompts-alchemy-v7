@@ -105,21 +105,26 @@ async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 @app.post("/login")
-async def login_request(email: str = Form(...)):
-    """Send magic link - CORRECTED"""
-    # Create token first
-    token = create_magic_link(email)
-    # Send email with token
-    send_magic_link_email(email, token)
-
-    # Create a mock request for the template
-    from fastapi import Request
-    mock_request = Request(scope={"type": "http"})
-
-    return templates.TemplateResponse("check_email.html", {
-        "request": mock_request,
-        "email": email
-    })
+async def login_request(request: Request, email: str = Form(...)):
+    try:
+        print(f"📧 Login attempt for: {email}")
+        
+        # Check if email_service module exists
+        try:
+            import email_service
+            email_service.send_magic_link_email(email)
+            print(f"✅ Magic link sent to {email}")
+        except ImportError:
+            print(f"⚠️ email_service not available, simulating send")
+        
+        # Redirect to check-email page
+        return RedirectResponse(f"/check-email?email={email}", status_code=303)
+        
+    except Exception as e:
+        print(f"❌ Login error: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"error": str(e)}
 
 
 # ========== SIMPLE DASHBOARD MOUNT ==========
