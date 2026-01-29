@@ -92,27 +92,7 @@ async def which_app():
     return {"message": "This is COMBINED_APP", "path": "/dashboard"}
 
 
-@app.get("/login")
-async def login_page(request: Request):
-    """Login form"""
-    return templates.TemplateResponse("login.html", {"request": request})
 
-@app.post("/login")
-async def login_request(email: str = Form(...)):
-    """Send magic link - CORRECTED"""
-    # Create token first
-    token = create_magic_link(email)
-    # Send email with token
-    send_magic_link_email(email, token)
-
-    # Create a mock request for the template
-    from fastapi import Request
-    mock_request = Request(scope={"type": "http"})
-
-    return templates.TemplateResponse("check_email.html", {
-        "request": mock_request,
-        "email": email
-    })
 
 @app.post("/test-login")
 async def test_login(request: Request, email: str = Form(...)):
