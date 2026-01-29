@@ -27,9 +27,7 @@ try:
     print(f"✅ dashboard/app.py loaded successfully")
     print(f"✅ Has 'app' attribute: {hasattr(dashboard_module, 'app')}")
     
-    # Mount it
-    app.mount("/dashboard", dashboard_module.app)
-    print(f"✅ Mounted at /dashboard")
+    
     
     # List ALL routes
     print(f"📋 All routes after mount:")
@@ -65,17 +63,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files
-app.mount("/static", StaticFiles(directory=os.path.join(dashboard_path, "static")), name="static")
-
 # Pass template directory to dashboard app
 #dashboard_app.state.template_dir = os.path.join(dashboard_path, "templates")
 
 
 try:
     from dashboard.app import app as dashboard_app
-    # Mount the entire dashboard app under /dashboard
-    app.mount("/dashboard", dashboard_app)
+    
     print("✓ Dashboard mounted at /dashboard")
 except ImportError as e:
     print(f"⚠ Could not import dashboard: {e}")
@@ -94,7 +88,7 @@ try:
     # Import bank app
     from central_bank import app as bank_app
     # Mount at /api
-    app.mount("/api", bank_app)
+    
     print("✅ Bank API mounted at /api")
 except Exception as e:
     print(f"❌ Failed to load Bank API: {e}")
@@ -198,9 +192,6 @@ try:
     # Get the FastAPI app instance
     dashboard_app = dashboard_module.app
     
-    # Mount it
-    app.mount("/dashboard", dashboard_app)
-    print("✅ Dashboard mounted at /dashboard")
     
 except Exception as e:
     print(f"❌ Mount failed: {e}")
@@ -337,9 +328,6 @@ try:
     print("Attempting to import dashboard.app...")
     from dashboard.app import app as dashboard_app
     print(f"✅ Imported dashboard.app from {dashboard_app.__file__}")
-    
-    app.mount("/dashboard", dashboard_app)
-    print("✅ Mounted at /dashboard")
     
 except Exception as e:
     print(f"❌ Mount failed: {e}")
