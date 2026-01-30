@@ -4,6 +4,13 @@ from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 import os
 
+# At the top after imports
+try:
+    from shared.auth import init_database
+    init_database()
+except ImportError:
+    print("⚠️ Could not initialize database")
+
 app = FastAPI()
 template_dir = os.path.join(os.path.dirname(__file__), "dashboard", "templates")
 templates = Jinja2Templates(directory=template_dir)
