@@ -137,6 +137,44 @@ async def check_email(request: Request, email: str):
         "email": email
     })
 
+@app.get("/debug-db")
+async def debug_db():
+    import os
+    import sqlite3
+    
+    results = []
+    
+    # Check common Render paths
+    paths_to_check = [
+        '.',  # Current directory
+        'shared',  # In shared folder
+        '/opt/render/project/src',  # Render default
+        '/var/lib/render/project/src',  # Another Render possibility
+        os.path.dirname(os.path.abspath(__file__)),  # Where clean_app.py is
+    ]
+    
+    for path in paths_to_check:
+        db_file = os.path.join(path, 'bank.db') if path != '.' else 'bank.db'
+        exists = os.path.exists(db_file)
+        results.append({
+            "path": db_file,
+            "exists": exists,
+            "size": os.path.getsize(db_file) if exists else 0
+        })
+    
+    # Also try to connect
+    try:
+        conn = sqlite3.connect('bank.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = cursor.fetchall()
+        conn.close()
+        results.append({"connection": "SUCCESS", "tables": tables})
+    except Exception as e:
+        results.append({"connection": f"FAILED: {str(e)}"})
+    
+    return results
+
 
 if __name__ == "__main__":
     import uvicorn
