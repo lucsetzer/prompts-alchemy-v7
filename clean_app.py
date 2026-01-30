@@ -52,25 +52,31 @@ async def auth_callback(token: str):
     response.set_cookie(key="session", value=token, httponly=True, secure=True)
     return response
 
-# 4. Dashboard
+
 # 4. Dashboard
 @app.get("/dashboard")
 async def dashboard(request: Request, session: str = Cookie(default=None)):
     if not session:
         return RedirectResponse("/login")
     
+    print(f"🔍 DASHBOARD DEBUG: Session token = '{session}'")
+    print(f"🔍 DASHBOARD DEBUG: Token starts with 'test_'? {session.startswith('test_')}")
+    
     # VERIFY THE SESSION TOKEN TO GET REAL USER EMAIL
     try:
         from shared.auth import verify_magic_link
         # session cookie contains the token
         email = verify_magic_link(session, mark_used=False)
+        print(f"🔍 DASHBOARD DEBUG: verify_magic_link returned: '{email}'")
+        
         if not email:
             print(f"❌ Invalid or expired token: {session[:20]}...")
             return RedirectResponse("/login")
         print(f"✅ Dashboard loaded for user: {email}")
     except ImportError as e:
         print(f"⚠️ shared.auth not found: {e}, using test email")
-        email = "test@example.com"  # Fallback ONLY if import fails
+        email = "test@example.com"
+    
     
     # GET REAL BALANCE FROM DATABASE
     try:
