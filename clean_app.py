@@ -5,6 +5,15 @@ from fastapi.templating import Jinja2Templates
 import os
 from pathlib import Path
 
+try:
+    from shared.auth import get_db_path
+    print("✅ Imported get_db_path from shared.auth")
+except ImportError as e:
+    print(f"⚠️ Could not import get_db_path: {e}")
+    # Fallback
+    def get_db_path():
+        return "bank.db"
+
 # Define the DB path once, use everywhere
 RENDER_DB_PATH = Path("/opt/render/project/src/bank.db")
 LOCAL_DB_PATH = Path("bank.db")
