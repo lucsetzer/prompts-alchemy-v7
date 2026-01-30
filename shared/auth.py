@@ -1,36 +1,29 @@
+import os
 import sqlite3
-from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer
-
-print("✅ REAL bank_auth.py IS LOADED!")
 
 SECRET_KEY = "your-secret-key-change-in-production"
 serializer = URLSafeTimedSerializer(SECRET_KEY)
 
-def init_database():
-    """Create database and tables if they don't exist"""
-    import sqlite3
-    import os
+def get_db_path():
+    """Get the absolute path to bank.db, works both locally and on Render"""
+    # Try several possible locations
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), 'bank.db'),  # Next to auth.py
+        os.path.join(os.getcwd(), 'bank.db'),  # Current working directory
+        '/opt/render/project/src/bank.db',  # Render's typical location
+        'bank.db',  # Original relative path
+    ]
     
-    db_path = os.path.join(os.path.dirname(__file__), 'bank.db')
-    conn = sqlite3.connect(db_path)
-    c = conn.cursor()
+    for path in possible_paths:
+        if os.path.exists(path):
+            print(f"✅ Found database at: {path}")
+            return path
     
-    # Create magic_links table
-    c.execute('''CREATE TABLE IF NOT EXISTS magic_links
-                 (token TEXT PRIMARY KEY, 
-                  email TEXT, 
-                  created DATETIME DEFAULT CURRENT_TIMESTAMP,
-                  used BOOLEAN DEFAULT FALSE)''')
-    
-    # Create accounts table (for balances)
-    c.execute('''CREATE TABLE IF NOT EXISTS accounts
-                 (email TEXT PRIMARY KEY,
-                  tokens INTEGER DEFAULT 0)''')
-    
-    conn.commit()
-    conn.close()
-    print(f"✅ Database initialized at {db_path}")
+    # If not found, use the first location (will create it there)
+    default_path = possible_paths[0]
+    print(f"⚠️ Database not found, will create at: {default_path}")
+    return default_path
 
 def verify_magic_link(token: str, max_age=900, mark_used=True):
     """Verify magic link token"""
@@ -44,7 +37,10 @@ def verify_magic_link(token: str, max_age=900, mark_used=True):
         email = serializer.loads(token, salt="magic-link", max_age=max_age)
         print(f"🔍 VERIFY DEBUG: Token valid for {email}")
         
-        conn = sqlite3.connect('bank.db')
+        # USE THE ABSOLUTE PATH
+        db_path = get_db_path()
+        conn = sqlite3.connect(db_path)
+        
         c = conn.cursor()
         c.execute("SELECT used FROM magic_links WHERE token = ?", (token,))
         result = c.fetchone()
@@ -70,19 +66,4 @@ def verify_magic_link(token: str, max_age=900, mark_used=True):
     except Exception as e:
         print(f"🔍 VERIFY DEBUG: Error: {type(e).__name__}: {e}")
         return None
-        
-def create_magic_link(email: str) -> str:
-    """Generate a magic link token"""
-    import sqlite3
-    from datetime import datetime
-    token = serializer.dumps(email, salt="magic-link")
-    # Store in database with expiry
-    conn = sqlite3.connect('bank.db')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS magic_links
-                 (token TEXT PRIMARY KEY, email TEXT, created DATETIME, used BOOLEAN)''')
-    c.execute("INSERT INTO magic_links VALUES (?, ?, ?, ?)",
-              (token, email, datetime.utcnow(), False))
-    conn.commit()
-    conn.close()
     return token
