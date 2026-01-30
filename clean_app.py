@@ -30,7 +30,7 @@ async def login_request(email: str = Form(...)):
     # Try to send email
     try:
         # Adjust based on your email_service module
-        from email_service import send_magic_link_email
+        from shared.email_service import send_magic_link_email
         send_magic_link_email(email, token)
         print(f"✅ Email sent to {email}")
     except ImportError:
@@ -40,7 +40,7 @@ async def login_request(email: str = Form(...)):
     
     # Try to save token (optional)
     try:
-        from bank_auth import store_magic_token
+        from shared.auth import store_magic_token
         store_magic_token(email, token)
     except ImportError:
         print(f"⚠️ bank_auth not found")
@@ -60,9 +60,33 @@ async def auth_callback(token: str):
 async def dashboard(request: Request, session: str = Cookie(default=None)):
     if not session:
         return RedirectResponse("/login")
+
+    # VERIFY THE SESSION TOKEN TO GET REAL USER EMAIL
+    try:
+        from shared.auth import verify_magic_link
+        # session cookie contains the token
+        email = verify_magic_link(session, mark_used=False)
+        if not email:
+            print(f"❌ Invalid or expired token: {session[:20]}...")
+            return RedirectResponse("/login")
+        print(f"✅ Dashboard loaded for user: {email}")
+    except ImportError as e:
+        print(f"⚠️ shared.auth not found: {e}, using test email")
+        email = "test@example.com"  # Fallback ONLY if import fails
     
-    email = "user@example.com"
-    balance = 100
+    # GET REAL BALANCE FROM DATABASE
+    try:
+        # Adjust this import based on where your balance function actually is
+        from central_bank import get_user_balance
+        balance = get_user_balance(email)
+        print(f"✅ User balance: {balance} tokens")
+    except ImportError as e:
+        print(f"⚠️ Balance module not found: {e}")
+        balance = 100  # Fallback
+    
+    # 🚨🚨🚨 DELETE THESE TWO LINES! THEY OVERWRITE EVERYTHING! 🚨🚨🚨
+    # email = "user@example.com"  # ← DELETE THIS!
+    # balance = 100              # ← DELETE THIS!
     
     # DEBUG: Print apps list
     apps_list = [
@@ -80,9 +104,9 @@ async def dashboard(request: Request, session: str = Cookie(default=None)):
     
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
-        "user_email": email,
-        "balance": balance,
-        "apps": apps_list  # Make sure this variable name matches template
+        "user_email": email,    # ← This will now be REAL email
+        "balance": balance,     # ← This will now be REAL balance
+        "apps": apps_list
     })
 
 @app.get("/settings")
