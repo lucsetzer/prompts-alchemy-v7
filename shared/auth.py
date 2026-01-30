@@ -5,7 +5,25 @@ from itsdangerous import URLSafeTimedSerializer
 SECRET_KEY = "your-secret-key-change-in-production"
 serializer = URLSafeTimedSerializer(SECRET_KEY)
 
-
+def get_db_path():
+    """Get the absolute path to bank.db, works both locally and on Render"""
+    # Try several possible locations
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), 'bank.db'),  # Next to auth.py
+        os.path.join(os.getcwd(), 'bank.db'),  # Current working directory
+        '/opt/render/project/src/bank.db',  # Render's typical location
+        'bank.db',  # Original relative path
+    ]
+    
+    for path in possible_paths:
+        if os.path.exists(path):
+            print(f"✅ Found database at: {path}")
+            return path
+    
+    # If not found, use the first location (will create it there)
+    default_path = possible_paths[0]
+    print(f"⚠️ Database not found, will create at: {default_path}")
+    return default_path
 
 def verify_magic_link(token: str, max_age=900, mark_used=True):
     """Verify magic link token"""
