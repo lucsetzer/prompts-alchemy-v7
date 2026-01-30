@@ -7,6 +7,31 @@ print("✅ REAL bank_auth.py IS LOADED!")
 SECRET_KEY = "your-secret-key-change-in-production"
 serializer = URLSafeTimedSerializer(SECRET_KEY)
 
+def init_database():
+    """Create database and tables if they don't exist"""
+    import sqlite3
+    import os
+    
+    db_path = os.path.join(os.path.dirname(__file__), 'bank.db')
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    
+    # Create magic_links table
+    c.execute('''CREATE TABLE IF NOT EXISTS magic_links
+                 (token TEXT PRIMARY KEY, 
+                  email TEXT, 
+                  created DATETIME DEFAULT CURRENT_TIMESTAMP,
+                  used BOOLEAN DEFAULT FALSE)''')
+    
+    # Create accounts table (for balances)
+    c.execute('''CREATE TABLE IF NOT EXISTS accounts
+                 (email TEXT PRIMARY KEY,
+                  tokens INTEGER DEFAULT 0)''')
+    
+    conn.commit()
+    conn.close()
+    print(f"✅ Database initialized at {db_path}")
+
 def verify_magic_link(token: str, max_age=900, mark_used=True):
     """Verify magic link token"""
     
