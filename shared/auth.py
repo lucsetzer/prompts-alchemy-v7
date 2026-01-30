@@ -37,7 +37,7 @@ def verify_magic_link(token: str, max_age=900, mark_used=True):
         email = serializer.loads(token, salt="magic-link", max_age=max_age)
         print(f"🔍 VERIFY DEBUG: Token valid for {email}")
         
-        # USE THE ABSOLUTE PATH
+        # USE THE SHARED FUNCTION
         db_path = get_db_path()
         conn = sqlite3.connect(db_path)
         
