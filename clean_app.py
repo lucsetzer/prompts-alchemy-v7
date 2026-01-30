@@ -3,6 +3,36 @@ from fastapi import FastAPI, Request, Cookie, Form
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 import os
+from pathlib import Path
+
+# Define the DB path once, use everywhere
+RENDER_DB_PATH = Path("/opt/render/project/src/bank.db")
+LOCAL_DB_PATH = Path("bank.db")
+
+# Use environment variable to detect Render
+IS_RENDER = os.getenv("RENDER", False)
+
+DB_PATH = RENDER_DB_PATH if IS_RENDER else LOCAL_DB_PATH
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database when app starts"""
+    print(f"🚀 Starting on {'RENDER' if IS_RENDER else 'LOCAL'}")
+    print(f"📁 Database path: {DB_PATH}")
+    
+    # Create DB and tables
+    import sqlite3
+    conn = sqlite3.connect(str(DB_PATH))
+    c = conn.cursor()
+    
+    c.execute('''CREATE TABLE IF NOT EXISTS magic_links
+                 (token TEXT PRIMARY KEY, email TEXT, created DATETIME, used BOOLEAN)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS accounts
+                 (email TEXT PRIMARY KEY, tokens INTEGER DEFAULT 0)''')
+    
+    conn.commit()
+    conn.close()
+    print(f"✅ Database ready at: {DB_PATH}")
 
 # At the top after imports
 try:
