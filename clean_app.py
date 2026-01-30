@@ -56,11 +56,12 @@ async def auth_callback(token: str):
     return response
 
 # 4. Dashboard
+# 4. Dashboard
 @app.get("/dashboard")
 async def dashboard(request: Request, session: str = Cookie(default=None)):
     if not session:
         return RedirectResponse("/login")
-
+    
     # VERIFY THE SESSION TOKEN TO GET REAL USER EMAIL
     try:
         from shared.auth import verify_magic_link
@@ -84,10 +85,6 @@ async def dashboard(request: Request, session: str = Cookie(default=None)):
         print(f"⚠️ Balance module not found: {e}")
         balance = 100  # Fallback
     
-    # 🚨🚨🚨 DELETE THESE TWO LINES! THEY OVERWRITE EVERYTHING! 🚨🚨🚨
-    # email = "user@example.com"  # ← DELETE THIS!
-    # balance = 100              # ← DELETE THIS!
-    
     # DEBUG: Print apps list
     apps_list = [
         {"name": "Thumbnail Wizard", "cost": 4, "icon": "🖼️", "status": "ready"},
@@ -104,9 +101,9 @@ async def dashboard(request: Request, session: str = Cookie(default=None)):
     
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
-        "user_email": email,    # ← This will now be REAL email
-        "balance": balance,     # ← This will now be REAL balance
-        "apps": apps_list
+        "user_email": email,    # This will be the real email (or test fallback)
+        "balance": balance,     # This will be real balance (or 100 fallback)
+        "apps": apps_list  # Make sure this variable name matches template
     })
 
 @app.get("/settings")
