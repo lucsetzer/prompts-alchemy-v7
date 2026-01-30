@@ -2,6 +2,8 @@ import sqlite3
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer
 
+print("✅ REAL bank_auth.py IS LOADED!")
+
 SECRET_KEY = "your-secret-key-change-in-production"
 serializer = URLSafeTimedSerializer(SECRET_KEY)
 
