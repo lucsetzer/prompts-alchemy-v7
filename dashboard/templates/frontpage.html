@@ -562,61 +562,9 @@
             </p>
         </div>
     </div>
-    </footer>
-
-    <!-- MODAL -->
-    <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <h2 style="color: #333; margin-bottom: 1rem; font-size: 1.75rem;">Join Prompts Alchemy</h2>
-            <p style="color: #555; margin-bottom: 1.5rem; line-height: 1.6;">Enter your email to get started. We'll send you a login link.</p>
-            <input type="email" id="signupEmail" placeholder="you@example.com" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 1rem;">
-            <button onclick="submitSignup()" style="width: 100%; padding: 0.75rem; background: #0cc0df; color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 1rem; cursor: pointer;">Send Magic Link</button>
-            <button onclick="hideSignupModal()" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem; background: transparent; color: #6b7280; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer;">Cancel</button>
-        </div>
-    </div>
-
+</footer>
 
     
-    <script>
-        // Modal functions
-        function showSignupModal() {
-            document.getElementById('signupModal').style.display = 'flex';
-        }
-        
-        function hideSignupModal() {
-            document.getElementById('signupModal').style.display = 'none';
-        }
-        
-        function submitSignup() {
-            const email = document.getElementById('signupEmail').value;
-            if (email && email.includes('@')) {
-                alert('Thank you! Signup launching soon. We\'ll notify you at ' + email);
-                hideSignupModal();
-            } else {
-                alert('Please enter a valid email address.');
-            }
-        }
-        
-        // Close modal when clicking outside
-        document.getElementById('signupModal').addEventListener('click', function(e) {
-            if (e.target.id === 'signupModal') {
-                hideSignupModal();
-            }
-        });
-        
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#pricing') {
-                    document.querySelector(targetId).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 </html>
 </html>
