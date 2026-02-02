@@ -14,6 +14,8 @@ except ImportError as e:
     def get_db_path():
         return "bank.db"
 
+app = FastAPI()
+
 # Define the DB path once, use everywhere
 RENDER_DB_PATH = Path("/opt/render/project/src/bank.db")
 LOCAL_DB_PATH = Path("bank.db")
