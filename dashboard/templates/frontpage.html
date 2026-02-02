@@ -20,9 +20,13 @@
         
         /* Navigation */
         .main-nav {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 1rem 0;
+            background: #1a1a2e;
+            color: white;
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .nav-container {
@@ -35,10 +39,9 @@
         }
         
         .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem !important;
         }
         
         .nav-links a {
@@ -49,7 +52,14 @@
         .nav-links a:hover {
             color: #0cc0df;
         }
-        
+
+        @media (max-width: 768px) {
+        .nav-container {
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem !important;
+        }
+            
         /* Hero */
         .hero {
             text-align: center;
@@ -153,17 +163,24 @@
 <body>
     <!-- NAVIGATION -->
     <nav class="main-nav">
-        <div class="nav-container">
-            <div>
-                <a href="/" style="color: #0a8ea8; text-decoration: none; font-size: 1.2rem;">
-                    <i class="fa-solid fa-hat-wizard"></i> <strong> Prompts Alchemy     </strong>
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                
-            </ul>
+    <div class="nav-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;">
+        <!-- Logo on left -->
+        <div>
+            <a href="/" style="color: #0a8ea8; text-decoration: none; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fa-solid fa-hat-wizard"></i> 
+                <strong>Prompts Alchemy</strong>
+            </a>
         </div>
+        
+        <!-- Links on right -->
+        <ul class="nav-links" style="display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center;">
+            <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="/login" style="background: #0a8ea8; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none;">Login</a></li>
+        </ul>
+    </div>
     </nav>
 
     <!-- HERO -->
