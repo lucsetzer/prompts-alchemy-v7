@@ -134,6 +134,46 @@
             display: grid;
             gap: 2rem;
         }
+
+        .grid-container {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 2rem !important;
+        }
+        
+        /* Card hover effects */
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s !important;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+        }
+        
+        /* Card button hover */
+        .card button:not(:disabled):hover {
+            background: #0a8ea8 !important;
+            transform: translateY(-2px) !important;
+        }
+        
+        /* Make the active card stand out */
+        .card:first-child {
+            border: 2px solid #0cc0df !important;
+        }
+        
+        /* Responsive grid */
+        @media (max-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .grid-container {
+                grid-template-columns: 1fr !important;
+            }
+        }
         
         .grid-3 {
             grid-template-columns: repeat(3, 1fr);
@@ -283,83 +323,86 @@
     </section>
 
     <!-- WIZARDS GRID -->
-    <section class="section">
-        <div class="section-container">
-            <h2 style="text-align: center; margin-bottom: 3rem; color: #333; font-size: 2.5rem;">AI Wizard Suite</h2>
-            <div class="grid grid-3">
-                <!-- Prompt -->
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 3rem; color: #0cc0df; margin-bottom: 1rem;">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    </div>
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Prompt</h3>
-                    <p style="color: #555; margin-bottom: 1.5rem;">Create optimized AI prompts</p>
-                    <button onclick="showSignupModal()" style="width: 100%; padding: 0.75rem; background: #0cc0df; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
-                        5 tokens • Try Now
-                    </button>
+    <section class="section" style="padding: 4rem 2rem; background: #f9fafb;">
+    <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: #333; font-size: 2.5rem;">AI Wizard Suite</h2>
+        
+        <!-- Grid container - FIXED -->
+        <div class="grid-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            
+            <!-- Prompt Card -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 3rem; color: #0cc0df; margin-bottom: 1rem;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Prompt Wizard</h3>
+                <p style="color: #555; margin-bottom: 1.5rem;">AI-lite interface for optimized prompt creation</p>
+                <button onclick="showSignupModal()" style="width: 100%; padding: 0.75rem; background: #0cc0df; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                    <i class="fas fa-bolt"></i> 5 tokens • Try Now
+                </button>
+            </div>
 
-                <!-- Hook -->
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
-                        <i class="fas fa-fish"></i>
-                    </div>
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Hook</h3>
-                    <p style="color: #555; margin-bottom: 1.5rem;">Generate 3 engaging hooks</p>
-                    <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
-                        4 tokens • Coming Soon
-                    </button>
+            <!-- Hook Card -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
+                    <i class="fas fa-fish"></i>
                 </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Hook Wizard</h3>
+                <p style="color: #555; margin-bottom: 1.5rem;">Generate 3 engaging hooks for social media</p>
+                <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
+                    4 tokens • Coming Soon
+                </button>
+            </div>
 
-                <!-- Document -->
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
-                        <i class="fas fa-file-contract"></i>
-                    </div>
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Document</h3>
-                    <p style="color: #555; margin-bottom: 1.5rem;">Analyze legal/medical docs</p>
-                    <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
-                        4 tokens • Coming Soon
-                    </button>
+            <!-- Document Card -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
+                    <i class="fas fa-file-contract"></i>
                 </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Document Wizard</h3>
+                <p style="color: #555; margin-bottom: 1.5rem;">Analyze legal/medical docs with plain English summaries</p>
+                <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
+                    4 tokens • Coming Soon
+                </button>
+            </div>
 
-                <!-- Thumbnail -->
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
-                        <i class="fas fa-image"></i>
-                    </div>
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Thumbnail</h3>
-                    <p style="color: #555; margin-bottom: 1.5rem;">Score + improve thumbnails</p>
-                    <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
-                        4 tokens • Coming Soon
-                    </button>
+            <!-- Thumbnail Card -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
+                    <i class="fas fa-image"></i>
                 </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Thumbnail Wizard</h3>
+                <p style="color: #555; margin-bottom: 1.5rem;">Score + improve thumbnails for YouTube/Instagram</p>
+                <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
+                    4 tokens • Coming Soon
+                </button>
+            </div>
 
-                <!-- Script -->
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
-                        <i class="fas fa-scroll"></i>
-                    </div>
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Script</h3>
-                    <p style="color: #555; margin-bottom: 1.5rem;">Create video scripts</p>
-                    <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
-                        3 token • Coming Soon
-                    </button>
+            <!-- Script Card -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
+                    <i class="fas fa-scroll"></i>
                 </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Script Wizard</h3>
+                <p style="color: #555; margin-bottom: 1.5rem;">Create video/presentation scripts with AI assistance</p>
+                <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
+                    3 tokens • Coming Soon
+                </button>
+            </div>
 
-                <!-- Accessibility -->
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
-                        <i class="fas fa-universal-access"></i>
-                    </div>
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Accessibility</h3>
-                    <p style="color: #555; margin-bottom: 1.5rem;">Audit + fix accessibility</p>
-                    <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
-                        0 tokens • Coming Soon
-                    </button>
+            <!-- Accessibility Card -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
+                    <i class="fas fa-universal-access"></i>
                 </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">A11y Wizard</h3>
+                <p style="color: #555; margin-bottom: 1.5rem;">Audit + fix accessibility issues (No AI)</p>
+                <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
+                    0 tokens • Coming Soon
+                </button>
             </div>
         </div>
+    </div>
     </section>
 
     <!-- PRICING -->
