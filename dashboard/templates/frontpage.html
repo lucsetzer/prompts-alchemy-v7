@@ -128,6 +128,49 @@
             padding: 2rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
+
+        /* Pricing card hover effects */
+        .pricing-grid .card:hover,
+        .token-grid .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        /* Button hover effects */
+        .pricing-grid button:hover,
+        .pricing-grid a:hover {
+            background: #0a8ea8 !important;
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive grid */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            .token-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            /* Center the highlighted card on tablet */
+            .pricing-grid .card:nth-child(2) {
+                grid-column: span 2;
+                transform: scale(1.02) !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .pricing-grid,
+            .token-grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .pricing-grid .card:nth-child(2) {
+                grid-column: span 1;
+                transform: scale(1) !important;
+            }
+        }
         
         /* Grids */
         .grid {
@@ -181,28 +224,6 @@
         
         .grid-4 {
             grid-template-columns: repeat(4, 1fr);
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            max-width: 400px;
-            width: 90%;
         }
         
         /* Footer */
@@ -406,101 +427,107 @@
     </section>
 
     <!-- PRICING -->
-    <section id="pricing" class="section section-light">
-        <div class="section-container">
-            <h2 style="text-align: center; margin-bottom: 3rem; color: #333; font-size: 2.5rem;">Simple, Transparent Pricing</h2>
-            
-            <!-- Free Callout -->
-            <div class="card" style="text-align: center; margin-bottom: 3rem;">
-                <h3 style="color: #333; font-size: 2rem; margin-bottom: 1rem;">Get Started Free</h3>
-                <p style="color: #555; font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                    Try Prompt Wizard with <strong>15 free tokens</strong>. No credit card required.
-                </p>
-                <a href="/app/dashboard" style="background: #0cc0df; color: white; font-size: 1.2rem; padding: 1rem 2.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block;">
-    <i class="fas fa-gift"></i> Get 15 Free Tokens
-</a>
-            </div>
-            
-            <!-- Monthly Plans -->
-            <div class="grid grid-3">
-                <!-- Student Plan -->
-                <div class="card" style="text-align: center;">
-                    
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 1rem; padding-top: 0.5rem;">Student</h3>
-                    <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0; color: #333;">
-                        $9.99<span style="font-size: 1rem; color: #6b7280;">/month</span>
-                    </div>
-                    <ul style="text-align: center; margin: 1.5rem 0; color: #555; list-style: none; padding: 0; font-size: 0.95rem;">
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ 75 tokens monthly</li>
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Student ID required</li>
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Email support</li>
-                    </ul>
-                    <button onclick="showSignupModal()" style="width: 100%; padding: 0.9rem; background: #0cc0df; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 0.5rem; cursor: pointer;">
-                        Choose Student
-                    </button>
+    <section id="pricing" class="section" style="padding: 4rem 2rem; background: #f9fafb;">
+    <div class="section-container" style="max-width: 1200px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: #333; font-size: 2.5rem;">Simple, Transparent Pricing</h2>
+        
+        <!-- Free Callout -->
+        <div class="card" style="background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; margin-bottom: 3rem;">
+            <h3 style="color: #333; font-size: 2rem; margin-bottom: 1rem;">Get Started Free</h3>
+            <p style="color: #555; font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Try Prompt Wizard with <strong style="color: #0cc0df;">15 free tokens</strong>. No credit card required.
+            </p>
+            <a href="/app/dashboard" style="background: #0cc0df; color: white; font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.3s;">
+                <i class="fas fa-gift"></i> Get 15 Free Tokens
+            </a>
+        </div>
+        
+        <!-- Monthly Plans Grid - FIXED -->
+        <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 4rem;">
+            <!-- Student Plan -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2.5rem 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s;">
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 1rem;">Student</h3>
+                <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0; color: #333;">
+                    $9.99<span style="font-size: 1rem; color: #6b7280;">/month</span>
                 </div>
-
-                <!-- Creator Plan -->
-                <div class="card" style="text-align: center;">
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 1rem;">Creator</h3>
-                    <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0; color: #333;">
-                        $19.99<span style="font-size: 1rem; color: #6b7280;">/month</span>
-                    </div>
-                    <ul style="text-align: center; margin: 1.5rem 0; color: #555; list-style: none; padding: 0; font-size: 0.95rem;">
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ 200 tokens monthly</li>
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ All features</li>
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Email support</li>
-                    </ul>
-                    <a href="/app/dashboard" style="width: 100%; padding: 0.9rem; background: #0cc0df; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 0.5rem; cursor: pointer; text-decoration: none; display: inline-block; text-align: center;">
-    Choose Creator
-</a>
-                </div>
-
-                <!-- Agency Plan -->
-                <div class="card" style="text-align: center;">
-                    <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 1rem;">Agency</h3>
-                    <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0; color: #333;">
-                        $49.99<span style="font-size: 1rem; color: #6b7280;">/month</span>
-                    </div>
-                    <ul style="text-align: center; margin: 1.5rem 0; color: #555; list-style: none; padding: 0; font-size: 0.95rem;">
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ 1000 shared tokens</li>
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ All features</li>
-                        <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Email support</li>
-                    </ul>
-                    <a href="/app/dashboard" style="width: 100%; padding: 0.9rem; background: #0cc0df; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 0.5rem; cursor: pointer; text-decoration: none; display: inline-block; text-align: center;">
-    Choose Agency
-</a>
-                </div>
+                <ul style="margin: 1.5rem 0; color: #555; list-style: none; padding: 0; font-size: 0.95rem;">
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ 75 tokens monthly</li>
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Student ID required</li>
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Email support</li>
+                </ul>
+                <button onclick="showSignupModal()" style="width: 100%; padding: 0.9rem; background: #0cc0df; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 0.5rem; cursor: pointer; transition: all 0.3s;">
+                    Choose Student
+                </button>
             </div>
 
-            <!-- Token Packs -->
-            <div style="margin-top: 4rem; text-align: center;">
-                <h3 style="margin-bottom: 2rem; color: #444; font-size: 1.75rem;">Need More Tokens? Buy Token Packs</h3>
-                <div class="grid grid-4">
-                    <div class="card" style="text-align: center; padding: 1.5rem;">
-                        <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Mini Boost</h4>
-                        <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$4.99</div>
-                        <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">25 tokens</div>
-                    </div>
-                    <div class="card" style="text-align: center; padding: 1.5rem;">
-                        <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Creator Boost</h4>
-                        <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$14.99</div>
-                        <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">100 tokens</div>
-                    </div>
-                    <div class="card" style="text-align: center; padding: 1.5rem;">
-                        <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Agency Boost</h4>
-                        <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$39.99</div>
-                        <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">300 tokens</div>
-                    </div>
-                    <div class="card" style="text-align: center; padding: 1.5rem;">
-                        <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Mega Boost</h4>
-                        <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$99.99</div>
-                        <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">2500 tokens</div>
-                    </div>
+            <!-- Creator Plan (Highlighted) -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2.5rem 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s; border: 2px solid #0cc0df; transform: scale(1.05);">
+                <div style="background: #0cc0df; color: white; padding: 0.5rem; border-radius: 4px; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; display: inline-block;">
+                    Most Popular
+                </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 1rem;">Creator</h3>
+                <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0; color: #333;">
+                    $19.99<span style="font-size: 1rem; color: #6b7280;">/month</span>
+                </div>
+                <ul style="margin: 1.5rem 0; color: #555; list-style: none; padding: 0; font-size: 0.95rem;">
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ 200 tokens monthly</li>
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ All 6 AI tools</li>
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Priority email support</li>
+                </ul>
+                <a href="/app/dashboard" style="width: 100%; padding: 0.9rem; background: #0cc0df; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 0.5rem; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: all 0.3s;">
+                    Choose Creator
+                </a>
+            </div>
+
+            <!-- Agency Plan -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2.5rem 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s;">
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 1rem;">Agency</h3>
+                <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0; color: #333;">
+                    $49.99<span style="font-size: 1rem; color: #6b7280;">/month</span>
+                </div>
+                <ul style="margin: 1.5rem 0; color: #555; list-style: none; padding: 0; font-size: 0.95rem;">
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ 1000 shared tokens</li>
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ All features + API access</li>
+                    <li style="margin-bottom: 0.75rem; padding: 0 0.5rem;">✓ Priority support</li>
+                </ul>
+                <a href="/app/dashboard" style="width: 100%; padding: 0.9rem; background: #0cc0df; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 0.5rem; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: all 0.3s;">
+                    Choose Agency
+                </a>
+            </div>
+        </div>
+
+        <!-- Token Packs - FIXED -->
+        <div style="margin-top: 4rem; text-align: center;">
+            <h3 style="margin-bottom: 2rem; color: #444; font-size: 1.75rem;">Need More Tokens? Buy Token Packs</h3>
+            <div class="token-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
+                <div class="card" style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Mini Boost</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$4.99</div>
+                    <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">25 tokens</div>
+                    <div style="margin-top: 1rem; font-size: 0.8rem; color: #6b7280;">$0.20 per token</div>
+                </div>
+                <div class="card" style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Creator Boost</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$14.99</div>
+                    <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">100 tokens</div>
+                    <div style="margin-top: 1rem; font-size: 0.8rem; color: #6b7280;">$0.15 per token</div>
+                </div>
+                <div class="card" style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Agency Boost</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$39.99</div>
+                    <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">300 tokens</div>
+                    <div style="margin-top: 1rem; font-size: 0.8rem; color: #6b7280;">$0.13 per token</div>
+                </div>
+                <div class="card" style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.1rem;">Mega Boost</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; color: #333;">$99.99</div>
+                    <div style="color: #0cc0df; font-weight: bold; font-size: 1.1rem;">2500 tokens</div>
+                    <div style="margin-top: 1rem; font-size: 0.8rem; color: #6b7280;">$0.04 per token</div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+    </section>    
 
     <!-- FOOTER -->
     <footer class="footer" style="background: #1a1a2e; color: white; padding: 3rem 2rem; text-align: center;">
