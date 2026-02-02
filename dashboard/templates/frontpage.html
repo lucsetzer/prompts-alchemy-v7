@@ -72,6 +72,40 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
+        .hero a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    
+    .hero a:first-child:hover {
+        background: #2d2d4d !important;
+        border-color: #2d2d4d !important;
+    }
+    
+    .hero a:last-child:hover {
+        background: rgba(255,255,255,0.1) !important;
+    }
+    
+    /* Mobile responsive for hero */
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.5rem !important;
+        }
+        
+        .hero p {
+            font-size: 1.2rem !important;
+        }
+        
+        .hero div {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hero a {
+            width: 100%;
+            max-width: 300px;
+        }
         
         /* Sections */
         .section {
@@ -184,22 +218,33 @@
 </nav>
 
     <!-- HERO -->
-    <section class="hero">
-        <div class="hero-container">
-            <h1 style="font-size: 3.5rem; margin-bottom: 1.5rem; font-weight: 700;">Professional AI Tools for Content Creators</h1>
-            <p style="font-size: 1.5rem; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-                Transform ideas into scripts, hooks, documents, and accessible content
-            </p>
-            <a href="/login" style="background: white; color: #333; font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">
-                <i class="fas fa-sign-in-alt"></i> Login / Get Started
+    <section class="hero" style="background: linear-gradient(135deg, #0cc0df 0%, #0a8ea8 100%); color: white; padding: 6rem 2rem; text-align: center; margin-top: 0 !important;">
+    <div class="hero-container" style="max-width: 1200px; margin: 0 auto;">
+        <h1 style="font-size: 3.5rem; margin-bottom: 1.5rem; font-weight: 700; color: white;">Professional AI Tools for Content Creators</h1>
+        <p style="font-size: 1.5rem; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto; color: white;">
+            Transform ideas into scripts, hooks, documents, and accessible content
+        </p>
+        
+        <!-- Button container - FIXED -->
+        <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+            <!-- Primary Button -->
+            <a href="/signup" 
+               style="background: #1a1a2e; color: white; font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #1a1a2e; min-width: 200px;">
+                <i class="fas fa-rocket"></i> Try Document Wizard Free
             </a>
-            <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
-                <button onclick="showSignupModal(
-                <a href="#pricing" style="background: transparent; border: 2px solid white; color: white; font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
-                    <i class="fas fa-tag"></i> View Pricing
-                </a>
-            </div>
+            
+            <!-- Secondary Button -->
+            <a href="#tools" 
+               style="background: transparent; border: 2px solid white; color: white; font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; min-width: 200px;">
+                <i class="fas fa-tools"></i> See All 6 Tools
+            </a>
         </div>
+        
+        <!-- Optional: Small text below buttons -->
+        <p style="margin-top: 1.5rem; color: rgba(255,255,255,0.9); font-size: 0.9rem;">
+            No credit card required • Neurodivergent-friendly design
+        </p>
+    </div>
     </section>
 
     <!-- VALUE PROPS -->
