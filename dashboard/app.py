@@ -88,7 +88,7 @@ async def public_root(request: Request):
     </head>
     <body>
         <main class="container">
-            <h1>🔮 Prompts Alchemy</h1>
+            <h1><i class="fa-solid fa-hat-wizard"></i> Prompts Alchemy</h1>
             <p>AI toolkit dashboard</p>
             <a href="/login" role="button">Login</a>
             <a href="/dashboard" role="button" secondary>Dashboard</a>
