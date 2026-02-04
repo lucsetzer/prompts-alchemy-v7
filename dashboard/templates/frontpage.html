@@ -281,9 +281,9 @@
     <!-- HERO -->
     <section class="hero" style="background: linear-gradient(135deg, #0cc0df 0%, #0a8ea8 100%); color: white; padding: 6rem 2rem; text-align: center; margin-top: 0 !important;">
     <div class="hero-container" style="max-width: 1200px; margin: 0 auto;">
-        <h1 style="font-size: 3.5rem; margin-bottom: 1.5rem; font-weight: 700; color: white;">Professional AI Tools for Content Creators</h1>
+        <h1 style="font-size: 3.5rem; margin-bottom: 1.5rem; font-weight: 700; color: white;">Professional AI Tools</h1>
         <p style="font-size: 1.5rem; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto; color: white;">
-            Transform ideas into scripts, hooks, documents, and accessible content
+            Transform ideas into scripts, hooks, prompts & analyze documents and thumbnail images
         </p>
         
         <!-- Button container - FIXED -->
@@ -291,7 +291,7 @@
             <!-- Primary Button -->
             <a href="/signup" 
                style="background: #1a1a2e; color: white; font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #1a1a2e; min-width: 200px;">
-                <i class="fas fa-rocket"></i> Try Document Wizard Free
+                <i class="fas fa-rocket"></i> Try Prompts Wizard Free
             </a>
             
             <!-- Secondary Button -->
@@ -303,7 +303,7 @@
         
         <!-- Optional: Small text below buttons -->
         <p style="margin-top: 1.5rem; color: rgba(255,255,255,0.9); font-size: 0.9rem;">
-            No credit card required • Neurodivergent-friendly design
+            No credit card required • Designed for clarity, built for everyone
         </p>
     </div>
     </section>
@@ -351,6 +351,18 @@
         <!-- Grid container - FIXED -->
         <div class="grid-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
             
+            <!-- Document Card -->
+            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 3rem; color: #0cc0df; margin-bottom: 1rem;">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Document Wizard</h3>
+                <p style="color: #555; margin-bottom: 1.5rem;">Analyze legal/medical docs with plain English summaries</p>
+                <button onclick="showSignupModal()" style="width: 100%; padding: 0.75rem; background: #0cc0df; color: white; border: none; border-radius: 6px;">
+                    4 credits • Try Now
+                </button>
+            </div>
+            
             <!-- Prompt Card -->
             <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
                 <div style="font-size: 3rem; color: #0cc0df; margin-bottom: 1rem;">
@@ -372,18 +384,6 @@
                 <p style="color: #555; margin-bottom: 1.5rem;">Generate 3 engaging hooks for social media</p>
                 <button disabled style="width: 100%; padding: 0.75rem; background: #e5e7eb; color: #6b7280; border: none; border-radius: 6px;">
                     2 credits • Coming Soon
-                </button>
-            </div>
-
-            <!-- Document Card -->
-            <div class="card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
-                <div style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;">
-                    <i class="fas fa-file-contract"></i>
-                </div>
-                <h3 style="color: #333; font-size: 1.5rem; margin-bottom: 0.5rem;">Document Wizard</h3>
-                <p style="color: #555; margin-bottom: 1.5rem;">Analyze legal/medical docs with plain English summaries</p>
-                <button onclick="showSignupModal()" style="width: 100%; padding: 0.75rem; background: #0cc0df; color: white; border: none; border-radius: 6px;">
-                    4 credits • Try Now
                 </button>
             </div>
 
@@ -436,7 +436,153 @@
             Mix and match tools with our unified credit system. One subscription, four powerful apps.
         </p>
         
-        <!-- INSERT CREDIT CALCULATOR HERE -->
+        <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 2rem; margin: 2rem 0;">
+    <h3 style="color: #0cc0df; margin-top: 0;">Credit Calculator</h3>
+    <p style="color: #9ca3af;">See how far your credits can go</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
+        <div>
+            <label for="credits" style="color: white; display: block; margin-bottom: 0.5rem;">
+                <strong>Your Credits:</strong>
+            </label>
+            <select id="credits" style="width: 100%; padding: 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #374151;">
+                <option value="15">Free: 15 credits</option>
+                <option value="75">Student: 75 credits</option>
+                <option value="200">Creator: 200 credits</option>
+                <option value="1000">Agency: 1000 credits</option>
+                <option value="custom">Custom amount</option>
+            </select>
+            <input type="number" id="custom-credits" placeholder="Enter custom credits" 
+                   style="width: 100%; padding: 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #374151; margin-top: 0.5rem; display: none;">
+        </div>
+        
+        <div>
+            <label style="color: white; display: block; margin-bottom: 0.5rem;">
+                <strong>Tool Usage:</strong>
+            </label>
+            <div style="color: #9ca3af; font-size: 0.9rem;">
+                Adjust sliders to mix & match tools
+            </div>
+        </div>
+    </div>
+    
+    <div id="tool-list">
+        <!-- Generated by JavaScript -->
+    </div>
+    
+    <div id="results" style="background: rgba(12, 192, 223, 0.1); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; display: none;">
+        <h4 style="color: #0cc0df; margin-top: 0;">Your Credit Usage</h4>
+        <div id="usage-breakdown" style="color: white; margin-bottom: 1rem;"></div>
+        <div style="color: #9ca3af; font-size: 0.9rem;">
+            <span id="remaining-credits" style="color: #10b981; font-weight: bold;">0</span> credits remaining
+        </div>
+    </div>
+</div>
+
+<script>
+const tools = [
+    { name: "Document Wizard", icon: "📄", cost: 4, description: "Legal/medical document analysis" },
+    { name: "Thumbnail Wizard", icon: "🖼️", cost: 3, description: "YouTube thumbnail feedback" },
+    { name: "Prompt Wizard", icon: "💡", cost: 2, description: "AI prompt creation" },
+    { name: "Script Wizard", icon: "📝", cost: 5, description: "Video script generation" }
+];
+
+function updateCalculator() {
+    const credits = document.getElementById('credits').value === 'custom' 
+        ? parseInt(document.getElementById('custom-credits').value) || 0
+        : parseInt(document.getElementById('credits').value);
+    
+    let html = '';
+    
+    tools.forEach((tool, index) => {
+        const maxUses = Math.floor(credits / tool.cost);
+        const sliderId = `slider-${index}`;
+        
+        html += `
+        <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <div>
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">${tool.icon}</span>
+                    <strong style="color: white;">${tool.name}</strong>
+                    <div style="color: #9ca3af; font-size: 0.9rem;">${tool.description} • ${tool.cost} credits each</div>
+                </div>
+                <div style="color: #0cc0df; font-weight: bold;">
+                    <span id="count-${index}">0</span> uses
+                </div>
+            </div>
+            <input type="range" id="${sliderId}" min="0" max="${maxUses}" value="0" 
+                   style="width: 100%;" 
+                   oninput="updateToolCount(${index}, ${tool.cost})">
+            <div style="display: flex; justify-content: space-between; color: #9ca3af; font-size: 0.9rem;">
+                <span>0</span>
+                <span>Max: ${maxUses}</span>
+            </div>
+        </div>
+        `;
+    });
+    
+    document.getElementById('tool-list').innerHTML = html;
+    updateResults();
+}
+
+function updateToolCount(index, cost) {
+    const slider = document.getElementById(`slider-${index}`);
+    const count = document.getElementById(`count-${index}`);
+    count.textContent = slider.value;
+    updateResults();
+}
+
+function updateResults() {
+    let totalUsed = 0;
+    let breakdown = '';
+    
+    tools.forEach((tool, index) => {
+        const slider = document.getElementById(`slider-${index}`);
+        if (slider) {
+            const uses = parseInt(slider.value);
+            if (uses > 0) {
+                totalUsed += uses * tool.cost;
+                breakdown += `<div>${tool.icon} ${tool.name}: ${uses} × ${tool.cost} = <strong>${uses * tool.cost}</strong> credits</div>`;
+            }
+        }
+    });
+    
+    const credits = document.getElementById('credits').value === 'custom' 
+        ? parseInt(document.getElementById('custom-credits').value) || 0
+        : parseInt(document.getElementById('credits').value);
+    
+    const remaining = credits - totalUsed;
+    
+    document.getElementById('usage-breakdown').innerHTML = breakdown || 'No tools selected';
+    document.getElementById('remaining-credits').textContent = remaining;
+    
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.style.display = totalUsed > 0 ? 'block' : 'none';
+    
+    // Color code remaining credits
+    const remainingEl = document.getElementById('remaining-credits');
+    if (remaining < 0) {
+        remainingEl.style.color = '#dc2626';
+        remainingEl.textContent = `${remaining} (over budget!)`;
+    } else if (remaining < credits * 0.1) {
+        remainingEl.style.color = '#d97706';
+    } else {
+        remainingEl.style.color = '#10b981';
+    }
+}
+
+// Event listeners
+document.getElementById('credits').addEventListener('change', function() {
+    const customInput = document.getElementById('custom-credits');
+    customInput.style.display = this.value === 'custom' ? 'block' : 'none';
+    updateCalculator();
+});
+
+document.getElementById('custom-credits').addEventListener('input', updateCalculator);
+
+// Initialize
+updateCalculator();
+</script>
         
         <div style="text-align: center; margin: 2rem 0; color: #0cc0df;">
             <i class="fas fa-arrow-down"></i>
@@ -452,7 +598,7 @@
         <div class="card" style="background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; margin-bottom: 3rem;">
             <h3 style="color: #333; font-size: 2rem; margin-bottom: 1rem;">Get Started Free</h3>
             <p style="color: #555; font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                Try Prompt Wizard with <strong style="color: #0cc0df;">15 free credits</strong>. No credit card required.
+                Try Prompts Wizard with <strong style="color: #0cc0df;">15 free credits</strong>. No credit card required.
             </p>
             <a href="/app/dashboard" style="background: #0cc0df; color: white; font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.3s;">
                 <i class="fas fa-gift"></i> Get 15 Free Credits
@@ -547,23 +693,27 @@
     </section>    
 
     <!-- Add waiting list form ABOVE footer -->
-    <section style="background: #0cc0df; color: white; padding: 4rem 2rem; text-align: center;">
-        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Get Early Access + 20 Bonus Credits</h2>
-        <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; margin: 0 auto 2rem auto;">
-            Be among the first to try Prompts Wizard. Launching this month.
-        </p>
-        <form action="/api/waitlist" method="POST" style="max-width: 500px; margin: 0 auto;">
-            <input type="email" name="email" placeholder="Your email address" required 
-                   style="width: 70%; padding: 1rem; border: none; border-radius: 8px 0 0 8px; font-size: 1rem;">
-            <button type="submit" 
-                    style="width: 30%; padding: 1rem; background: #1a1a2e; color: white; border: none; border-radius: 0 8px 8px 0; font-weight: 600; cursor: pointer;">
-                Join Waitlist
+    <div style="text-align: center; padding: 4rem 0; background: rgba(12, 192, 223, 0.05); margin-top: 4rem;">
+    <h2 style="color: white; margin-bottom: 1rem;">
+        Join the Waitlist for Early Access
+    </h2>
+    <p style="color: #9ca3af; max-width: 600px; margin: 0 auto 2rem;">
+        Get notified when new tools launch and receive exclusive early-bird pricing.
+    </p>
+    
+    <form action="/join-waitlist" method="POST" style="max-width: 400px; margin: 0 auto;">
+        <div style="display: flex; gap: 0.5rem;">
+            <input type="email" name="email" placeholder="Your email address" required
+                   style="flex-grow: 1; padding: 0.75rem; border-radius: 6px; border: 1px solid #374151; background: rgba(255,255,255,0.1); color: white;">
+            <button type="submit" style="padding: 0.75rem 1.5rem; background: #0cc0df; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                Join
             </button>
-        </form>
-        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
-            No spam. Early access code + 20 free credits on launch.
+        </div>
+        <p style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+            No spam. Unsubscribe anytime.
         </p>
-    </section>
+    </form>
+</div>
     
     <!-- FOOTER -->
     <footer class="footer" style="background: #1a1a2e; color: white; padding: 3rem 2rem; text-align: center;">
