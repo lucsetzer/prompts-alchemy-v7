@@ -426,168 +426,78 @@
     </div>
     </section>
 
-    <!-- CREDIT CALCULATOR -->
+    <!-- Credit Examples Section -->
+<div class="container" style="margin: 3rem auto;">
+    <h2 style="text-align: center; color: #0cc0df; margin-bottom: 1rem;">
+        Simple, Unified Credits
+    </h2>
+    <p style="text-align: center; color: #9ca3af; max-width: 600px; margin: 0 auto 2rem;">
+        One credit system powers all four tools. Here's what each plan gives you:
+    </p>
     
-    <div class="container">
-        <h2 style="text-align: center; color: #0cc0df; margin: 3rem 0 1rem;">
-            How Many Tools Can You Use?
-        </h2>
-        <p style="text-align: center; color: #9ca3af; max-width: 600px; margin: 0 auto 2rem;">
-            Mix and match tools with our unified credit system. One subscription, four powerful apps.
-        </p>
-        
-        <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 2rem; margin: 2rem 0;">
-    <h3 style="color: #0cc0df; margin-top: 0;">Credit Calculator</h3>
-    <p style="color: #9ca3af;">See how far your credits can go</p>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
-        <div>
-            <label for="credits" style="color: white; display: block; margin-bottom: 0.5rem;">
-                <strong>Your Credits:</strong>
-            </label>
-            <select id="credits" style="width: 100%; padding: 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #374151;">
-                <option value="15">Free: 15 credits</option>
-                <option value="75">Student: 75 credits</option>
-                <option value="200">Creator: 200 credits</option>
-                <option value="1000">Agency: 1000 credits</option>
-                <option value="custom">Custom amount</option>
-            </select>
-            <input type="number" id="custom-credits" placeholder="Enter custom credits" 
-                   style="width: 100%; padding: 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #374151; margin-top: 0.5rem; display: none;">
-        </div>
-        
-        <div>
-            <label style="color: white; display: block; margin-bottom: 0.5rem;">
-                <strong>Tool Usage:</strong>
-            </label>
-            <div style="color: #9ca3af; font-size: 0.9rem;">
-                Adjust sliders to mix & match tools
+    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 2rem; margin: 2rem 0;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <!-- Free Plan -->
+            <div style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid #374151;">
+                <div style="color: #0cc0df; font-size: 0.9rem; font-weight: bold; margin-bottom: 0.5rem;">
+                    <i class="fas fa-gift"></i> FREE TIER
+                </div>
+                <h3 style="color: white; margin-top: 0;">15 Credits</h3>
+                <div style="color: #9ca3af; font-size: 0.9rem;">
+                    <div style="margin-bottom: 0.5rem;">✅ <strong>Example uses:</strong></div>
+                    <div>• 3 document analyses</div>
+                    <div>• 5 thumbnail reviews</div>
+                    <div>• 7 prompt generations</div>
+                    <div>• 3 video scripts</div>
+                    <div style="margin-top: 0.5rem;">• Or any combination</div>
+                </div>
+            </div>
+            
+            <!-- Student Plan -->
+            <div style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid #0cc0df;">
+                <div style="color: #0cc0df; font-size: 0.9rem; font-weight: bold; margin-bottom: 0.5rem;">
+                    <i class="fas fa-user-graduate"></i> MOST POPULAR
+                </div>
+                <h3 style="color: white; margin-top: 0;">75 Credits • $9.99</h3>
+                <div style="color: #9ca3af; font-size: 0.9rem;">
+                    <div style="margin-bottom: 0.5rem;">✅ <strong>Example monthly use:</strong></div>
+                    <div>• 18 document analyses</div>
+                    <div>• 25 thumbnail reviews</div>
+                    <div>• 37 prompt generations</div>
+                    <div>• 15 video scripts</div>
+                    <div style="margin-top: 0.5rem;">• Perfect for regular creators</div>
+                </div>
+            </div>
+            
+            <!-- Creator Plan -->
+            <div style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid #374151;">
+                <div style="color: #0cc0df; font-size: 0.9rem; font-weight: bold; margin-bottom: 0.5rem;">
+                    <i class="fas fa-crown"></i> POWER USER
+                </div>
+                <h3 style="color: white; margin-top: 0;">200 Credits • $19.99</h3>
+                <div style="color: #9ca3af; font-size: 0.9rem;">
+                    <div style="margin-bottom: 0.5rem;">✅ <strong>For serious creators:</strong></div>
+                    <div>• 50 document analyses</div>
+                    <div>• 66 thumbnail reviews</div>
+                    <div>• 100 prompt generations</div>
+                    <div>• 40 video scripts</div>
+                    <div style="margin-top: 0.5rem;">• Unlimited mixing & matching</div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div id="tool-list">
-        <!-- Generated by JavaScript -->
-    </div>
-    
-    <div id="results" style="background: rgba(12, 192, 223, 0.1); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; display: none;">
-        <h4 style="color: #0cc0df; margin-top: 0;">Your Credit Usage</h4>
-        <div id="usage-breakdown" style="color: white; margin-bottom: 1rem;"></div>
-        <div style="color: #9ca3af; font-size: 0.9rem;">
-            <span id="remaining-credits" style="color: #10b981; font-weight: bold;">0</span> credits remaining
+        
+        <div style="text-align: center; margin-top: 2rem; color: #9ca3af; font-size: 0.9rem;">
+            <i class="fas fa-info-circle"></i> All plans renew monthly. Need more? 
+            <a href="#packs" style="color: #0cc0df;">Purchase additional credit packs</a>.
         </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="#pricing" role="button" style="background: #0cc0df; border-color: #0cc0df;">
+            <i class="fas fa-table"></i> See Full Pricing Details
+        </a>
     </div>
 </div>
-
-<script>
-const tools = [
-    { name: "Document Wizard", icon: "📄", cost: 4, description: "Legal/medical document analysis" },
-    { name: "Thumbnail Wizard", icon: "🖼️", cost: 3, description: "YouTube thumbnail feedback" },
-    { name: "Prompt Wizard", icon: "💡", cost: 2, description: "AI prompt creation" },
-    { name: "Script Wizard", icon: "📝", cost: 5, description: "Video script generation" }
-];
-
-function updateCalculator() {
-    const credits = document.getElementById('credits').value === 'custom' 
-        ? parseInt(document.getElementById('custom-credits').value) || 0
-        : parseInt(document.getElementById('credits').value);
-    
-    let html = '';
-    
-    tools.forEach((tool, index) => {
-        const maxUses = Math.floor(credits / tool.cost);
-        const sliderId = `slider-${index}`;
-        
-        html += `
-        <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div>
-                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">${tool.icon}</span>
-                    <strong style="color: white;">${tool.name}</strong>
-                    <div style="color: #9ca3af; font-size: 0.9rem;">${tool.description} • ${tool.cost} credits each</div>
-                </div>
-                <div style="color: #0cc0df; font-weight: bold;">
-                    <span id="count-${index}">0</span> uses
-                </div>
-            </div>
-            <input type="range" id="${sliderId}" min="0" max="${maxUses}" value="0" 
-                   style="width: 100%;" 
-                   oninput="updateToolCount(${index}, ${tool.cost})">
-            <div style="display: flex; justify-content: space-between; color: #9ca3af; font-size: 0.9rem;">
-                <span>0</span>
-                <span>Max: ${maxUses}</span>
-            </div>
-        </div>
-        `;
-    });
-    
-    document.getElementById('tool-list').innerHTML = html;
-    updateResults();
-}
-
-function updateToolCount(index, cost) {
-    const slider = document.getElementById(`slider-${index}`);
-    const count = document.getElementById(`count-${index}`);
-    count.textContent = slider.value;
-    updateResults();
-}
-
-function updateResults() {
-    let totalUsed = 0;
-    let breakdown = '';
-    
-    tools.forEach((tool, index) => {
-        const slider = document.getElementById(`slider-${index}`);
-        if (slider) {
-            const uses = parseInt(slider.value);
-            if (uses > 0) {
-                totalUsed += uses * tool.cost;
-                breakdown += `<div>${tool.icon} ${tool.name}: ${uses} × ${tool.cost} = <strong>${uses * tool.cost}</strong> credits</div>`;
-            }
-        }
-    });
-    
-    const credits = document.getElementById('credits').value === 'custom' 
-        ? parseInt(document.getElementById('custom-credits').value) || 0
-        : parseInt(document.getElementById('credits').value);
-    
-    const remaining = credits - totalUsed;
-    
-    document.getElementById('usage-breakdown').innerHTML = breakdown || 'No tools selected';
-    document.getElementById('remaining-credits').textContent = remaining;
-    
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.style.display = totalUsed > 0 ? 'block' : 'none';
-    
-    // Color code remaining credits
-    const remainingEl = document.getElementById('remaining-credits');
-    if (remaining < 0) {
-        remainingEl.style.color = '#dc2626';
-        remainingEl.textContent = `${remaining} (over budget!)`;
-    } else if (remaining < credits * 0.1) {
-        remainingEl.style.color = '#d97706';
-    } else {
-        remainingEl.style.color = '#10b981';
-    }
-}
-
-// Event listeners
-document.getElementById('credits').addEventListener('change', function() {
-    const customInput = document.getElementById('custom-credits');
-    customInput.style.display = this.value === 'custom' ? 'block' : 'none';
-    updateCalculator();
-});
-
-document.getElementById('custom-credits').addEventListener('input', updateCalculator);
-
-// Initialize
-updateCalculator();
-</script>
-        
-        <div style="text-align: center; margin: 2rem 0; color: #0cc0df;">
-            <i class="fas fa-arrow-down"></i>
-        </div>
-    </div>
     
     <!-- PRICING -->
     <section id="pricing" class="section" style="padding: 4rem 2rem; background: #f9fafb;">
